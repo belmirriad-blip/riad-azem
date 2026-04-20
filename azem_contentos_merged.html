@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>عزم | AZEM — نظام متكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ===== THEMES ===== */
+  :root, [data-theme="gold"] {
+    --black: #0a0a0a; --surface: #1a1a1a; --surface2: #222; --border: #2a2a2a; --border2: #333;
+    --accent: #c9a84c; --accent-dim: #8a6f30; --accent-glow: rgba(201,168,76,0.35); --accent-soft: rgba(201,168,76,0.12);
+    --green: #2dbe6c; --green-dim: rgba(45,190,108,0.15); --red: #e05555; --amber: #e0a030;
+    --text: #f0ede6; --text-dim: #888; --text-faint: #3a3a3a; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(10,10,10,0.93);
+    /* ContentOS vars */
+    --cos-bg: #0a0a0a; --cos-surface: #1a1a1a; --cos-surface2: #222; --cos-border: rgba(255,255,255,0.07); --cos-border2: rgba(255,255,255,0.12);
+    --cos-text: #f0ede6; --cos-muted: #888; --cos-accent: #c9a84c; --cos-accent2: #8a6f30;
+    --cos-red: #e05555; --cos-orange: #e0a030; --cos-blue: #4d8ef5; --cos-teal: #2dbe6c; --cos-pink: #e870c8;
+  }
+  [data-theme="blue"] {
+    --black: #05090f; --surface: #0d1829; --surface2: #111f38; --border: #1a2d4a; --border2: #1f3660;
+    --accent: #4d8ef5; --accent-dim: #2d5cb8; --accent-glow: rgba(77,142,245,0.45); --accent-soft: rgba(77,142,245,0.12);
+    --green: #2dbe6c; --green-dim: rgba(45,190,108,0.15); --red: #e05555; --amber: #e0a030;
+    --text: #e8f0ff; --text-dim: #6a8ab8; --text-faint: #1f3660; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(77,142,245,0.12) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(5,9,15,0.93);
+    --cos-bg: #05090f; --cos-surface: #0d1829; --cos-surface2: #111f38; --cos-border: rgba(77,142,245,0.15); --cos-border2: rgba(77,142,245,0.25);
+    --cos-text: #e8f0ff; --cos-muted: #6a8ab8; --cos-accent: #4d8ef5; --cos-accent2: #7c6ff7;
+    --cos-red: #e05555; --cos-orange: #e0a030; --cos-blue: #4d8ef5; --cos-teal: #2dbe6c; --cos-pink: #e870c8;
+  }
+  [data-theme="pink"] {
+    --black: #0f080f; --surface: #1e0f1e; --surface2: #261526; --border: #3a1a3a; --border2: #4a2050;
+    --accent: #e870c8; --accent-dim: #9b3d8a; --accent-glow: rgba(232,112,200,0.4); --accent-soft: rgba(232,112,200,0.12);
+    --green: #2dbe6c; --green-dim: rgba(45,190,108,0.15); --red: #e05555; --amber: #e0a030;
+    --text: #fce8fc; --text-dim: #a06090; --text-faint: #4a2050; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(232,112,200,0.1) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(15,8,15,0.93);
+    --cos-bg: #0f080f; --cos-surface: #1e0f1e; --cos-surface2: #261526; --cos-border: rgba(232,112,200,0.15); --cos-border2: rgba(232,112,200,0.25);
+    --cos-text: #fce8fc; --cos-muted: #a06090; --cos-accent: #e870c8; --cos-accent2: #9b3d8a;
+    --cos-red: #e05555; --cos-orange: #e0a030; --cos-blue: #4d8ef5; --cos-teal: #2dbe6c; --cos-pink: #e870c8;
+  }
+  [data-theme="white"] {
+    --black: #f5f4f0; --surface: #ffffff; --surface2: #f0eff5; --border: #e0dfd8; --border2: #ccc9c0;
+    --accent: #1a1a1a; --accent-dim: #444; --accent-glow: rgba(26,26,26,0.15); --accent-soft: rgba(26,26,26,0.06);
+    --green: #1a9e55; --green-dim: rgba(26,158,85,0.12); --red: #cc3333; --amber: #b87a10;
+    --text: #1a1a1a; --text-dim: #666; --text-faint: #bbb; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(200,200,200,0.15) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(245,244,240,0.95);
+    --cos-bg: #f5f4f0; --cos-surface: #ffffff; --cos-surface2: #f0eff5; --cos-border: rgba(0,0,0,0.08); --cos-border2: rgba(0,0,0,0.15);
+    --cos-text: #1a1a1a; --cos-muted: #666; --cos-accent: #1a1a1a; --cos-accent2: #5548d9;
+    --cos-red: #cc3333; --cos-orange: #b87a10; --cos-blue: #2264c8; --cos-teal: #1a9e55; --cos-pink: #b040a0;
+  }
+  [data-theme="forest"] {
+    --black: #060d08; --surface: #0e1f12; --surface2: #122818; --border: #1a3a20; --border2: #224828;
+    --accent: #4caf72; --accent-dim: #2d7a48; --accent-glow: rgba(76,175,114,0.4); --accent-soft: rgba(76,175,114,0.1);
+    --green: #4caf72; --green-dim: rgba(76,175,114,0.15); --red: #e05555; --amber: #e0a030;
+    --text: #e0f0e6; --text-dim: #6a9a76; --text-faint: #1e4028; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(76,175,114,0.1) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(6,13,8,0.93);
+    --cos-bg: #060d08; --cos-surface: #0e1f12; --cos-surface2: #122818; --cos-border: rgba(76,175,114,0.15); --cos-border2: rgba(76,175,114,0.25);
+    --cos-text: #e0f0e6; --cos-muted: #6a9a76; --cos-accent: #4caf72; --cos-accent2: #7c6ff7;
+    --cos-red: #e05555; --cos-orange: #e0a030; --cos-blue: #4d8ef5; --cos-teal: #4caf72; --cos-pink: #e870c8;
+  }
+  [data-theme="ember"] {
+    --black: #0f0805; --surface: #1f1008; --surface2: #28150a; --border: #3a200e; --border2: #4a2a12;
+    --accent: #f5703a; --accent-dim: #a84010; --accent-glow: rgba(245,112,58,0.4); --accent-soft: rgba(245,112,58,0.1);
+    --green: #2dbe6c; --green-dim: rgba(45,190,108,0.15); --red: #e05555; --amber: #f5a030;
+    --text: #fdf0e6; --text-dim: #9a6040; --text-faint: #3a2010; --radius: 12px;
+    --bg-grad: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(245,112,58,0.1) 0%, transparent 70%);
+    --gold: var(--accent); --gold-dim: var(--accent-dim);
+    --header-bg: rgba(15,8,5,0.93);
+    --cos-bg: #0f0805; --cos-surface: #1f1008; --cos-surface2: #28150a; --cos-border: rgba(245,112,58,0.15); --cos-border2: rgba(245,112,58,0.25);
+    --cos-text: #fdf0e6; --cos-muted: #9a6040; --cos-accent: #f5703a; --cos-accent2: #f5a030;
+    --cos-red: #e05555; --cos-orange: #f5a030; --cos-blue: #4d8ef5; --cos-teal: #2dbe6c; --cos-pink: #e870c8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: var(--bg-grad);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--header-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .logo-ar {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--gold);
+    text-shadow: 0 0 30px var(--accent-glow);
+    letter-spacing: 1px;
+  }
+  .logo-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--text-dim);
+    margin-top: -2px;
+  }
+  .day-badge {
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 5px 16px;
+    border-radius: 30px;
+    letter-spacing: 0.5px;
+  }
+
+  /* NAV */
+  .nav {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 18px 20px 0;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    direction: rtl;
+  }
+  .nav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+  .nav-btn.active { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* MAIN */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 22px 20px 70px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SECTION */
+  .section { display: none; animation: fadeUp 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* SCORE RING */
+  .score-area {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 18px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+  .ring-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  .ring-container svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border2); stroke-width: 7; }
+  .ring-fill {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1);
+    filter: drop-shadow(0 0 6px var(--accent-glow));
+  }
+  .ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .ring-text small { font-size: 9px; color: var(--text-dim); letter-spacing: 0.5px; margin-top: 2px; font-weight: 600; }
+  .score-label { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
+  .score-label strong { color: var(--text); font-size: 26px; font-weight: 900; display: block; line-height: 1; }
+
+  /* HABIT ROW */
+  .habits-list { display: flex; flex-direction: column; gap: 9px; }
+  .habit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    direction: rtl;
+  }
+  .habit-row:hover { border-color: var(--border2); }
+  .habit-row.done { border-color: var(--green); background: var(--green-dim); }
+  .habit-row.done .habit-name { color: var(--text); }
+  .habit-check {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    font-size: 13px;
+    margin-right: auto;
+    margin-left: 0;
+  }
+  .habit-row.done .habit-check { background: var(--green); border-color: var(--green); }
+  .habit-emoji { font-size: 18px; flex-shrink: 0; }
+  .habit-name { flex: 1; font-size: 14px; color: var(--text-dim); font-weight: 600; }
+
+  /* TASKS */
+  .task-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+  .task-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    direction: rtl;
+    text-align: right;
+  }
+  .task-input::placeholder { color: var(--text-faint); }
+  .task-input:focus { border-color: var(--gold-dim); }
+  .add-btn {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { opacity: 0.85; }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    direction: rtl;
+  }
+  .task-item.done { background: var(--green-dim); border-color: var(--green); }
+  .task-item.done .task-text { text-decoration: line-through; color: var(--text-dim); }
+  .task-check {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--border2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .task-item.done .task-check { background: var(--green); border-color: var(--green); }
+  .task-text { flex: 1; font-size: 14px; font-weight: 500; }
+  .task-del { color: var(--text-faint); font-size: 18px; padding: 2px 6px; background: none; border: none; cursor: pointer; opacity: 0.4; transition: opacity 0.15s; margin-right: auto; margin-left: 0; }
+  .task-del:hover { opacity: 1; color: var(--red); }
+
+  /* JOURNAL */
+  .journal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .journal-grid { grid-template-columns: 1fr; } }
+  .journal-field label { display: block; font-size: 11px; color: var(--text-dim); margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px; }
+  .journal-textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    resize: none;
+    outline: none;
+    min-height: 80px;
+    transition: border-color 0.15s;
+    direction: rtl;
+    text-align: right;
+  }
+  .journal-textarea:focus { border-color: var(--gold-dim); }
+
+  /* MOOD */
+  .mood-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    direction: rtl;
+  }
+  .mood-label { font-size: 13px; color: var(--text-dim); font-weight: 700; width: 80px; flex-shrink: 0; }
+  .mood-btns { display: flex; gap: 5px; flex-wrap: wrap; direction: ltr; }
+  .mood-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cairo', sans-serif;
+  }
+  .mood-btn:hover { border-color: var(--gold-dim); }
+  .mood-btn.sel-mood { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .mood-btn.sel-motiv { background: #5b7ff5; border-color: #5b7ff5; color: white; }
+
+  /* WEEK */
+  .week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 18px;
+    direction: ltr;
+  }
+  .week-day-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .week-day-btn.today { border-color: var(--gold-dim); }
+  .week-day-btn.active-day { background: var(--gold); border-color: var(--gold); }
+  .week-day-btn .wd { font-size: 9px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; letter-spacing: 0.5px; }
+  .week-day-btn.active-day .wd { color: var(--black); }
+  .week-day-btn .wdn { font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 17px; color: var(--text); margin-top: 2px; }
+  .week-day-btn.active-day .wdn { color: var(--black); }
+  .week-day-btn .wds { width: 5px; height: 5px; border-radius: 50%; margin: 4px auto 0; background: transparent; }
+  .week-day-btn.has-data .wds { background: var(--gold); }
+  .week-day-btn.active-day .wds { background: var(--black); }
+
+  /* 75 DAY GRID */
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 5px;
+    margin-bottom: 18px;
+    direction: ltr;
+  }
+  @media (max-width: 500px) { .day-grid { grid-template-columns: repeat(11, 1fr); gap: 4px; } }
+  .grid-day {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  .grid-day.current { border-color: var(--gold); color: var(--gold); }
+  .grid-day.excellent { background: var(--green); border-color: var(--green); color: white; }
+  .grid-day.good { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .grid-day.average { background: var(--amber); border-color: var(--amber); color: var(--black); }
+  .grid-day.poor { background: #b03030; border-color: #b03030; color: white; }
+
+  /* CHARTS */
+  .chart-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .chart-title { font-size: 12px; color: var(--text-dim); font-weight: 700; margin-bottom: 14px; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 80px; direction: ltr; }
+  .bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; gap: 4px; }
+  .bar-fill { width: 100%; border-radius: 4px 4px 0 0; transition: height 1s ease; min-height: 3px; }
+  .bar-fill.gold { background: var(--gold); }
+  .bar-fill.green { background: var(--green); }
+  .bar-lbl { font-size: 9px; color: var(--text-faint); text-align: center; font-weight: 700; }
+  .bar-val { font-size: 10px; color: var(--text-dim); font-weight: 700; font-family: 'Bebas Neue', sans-serif; }
+
+  /* HABIT PROGRESS */
+  .habit-progress-item { margin-bottom: 12px; }
+  .hpi-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .hpi-name { font-size: 13px; color: var(--text); font-weight: 600; }
+  .hpi-pct { font-weight: 900; font-size: 15px; color: var(--gold); }
+  .hpi-bar { height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden; }
+  .hpi-fill { height: 100%; border-radius: 3px; background: var(--gold); transition: width 1s ease; }
+  .hpi-fill.green { background: var(--green); }
+  .hpi-fill.amber { background: var(--amber); }
+  .hpi-fill.red { background: var(--red); }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 380px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-num { font-weight: 900; font-size: 28px; color: var(--gold); line-height: 1; }
+  .stat-lbl { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
+
+  /* STREAK */
+  .streak-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--accent-soft), transparent);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    direction: rtl;
+  }
+  .streak-fire { font-size: 30px; }
+  .streak-num { font-weight: 900; font-size: 38px; color: var(--gold); line-height: 1; }
+  .streak-info small { display: block; font-size: 11px; color: var(--text-dim); font-weight: 600; }
+
+  /* SAVE BTN */
+  .save-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+  .save-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+  .save-btn:active { transform: none; }
+
+  /* SETUP */
+  .setup-row { margin-bottom: 14px; }
+  .setup-row label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; font-weight: 700; }
+  .setup-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    direction: rtl;
+    text-align: right;
+  }
+  .setup-input:focus { border-color: var(--gold); }
+  .setup-input[type="date"] { direction: ltr; text-align: left; }
+
+  /* HEADINGS */
+  .sec-heading { font-weight: 900; font-size: 26px; color: var(--text); margin-bottom: 4px; letter-spacing: 0.5px; }
+  .sec-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; font-weight: 500; }
+  .divider { height: 1px; background: var(--border); margin: 18px 0; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green);
+    color: white;
+    padding: 11px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+    font-family: 'Cairo', sans-serif;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; font-size: 12px; color: var(--text-dim); font-weight: 600; direction: rtl; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-left: 4px; vertical-align: middle; }
+
+  /* TASK MODAL BUTTONS */
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .type-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .type-btn.active, .type-btn:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+  .priority-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .priority-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+  }
+  .task-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+  .task-meta-tag { font-size: 11px; color: var(--text-faint); font-weight: 600; }
+  .duration-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .duration-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+
+  /* ===== SPLASH SCREEN ===== */
+  #splash {
+    position: fixed; inset: 0; background: var(--black); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  #splash.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
+  .splash-logo-wrap {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    animation: splashPop 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+  }
+  @keyframes splashPop {
+    from { opacity: 0; transform: scale(0.3) translateY(40px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .splash-icon-bg {
+    width: 128px; height: 128px; border-radius: 30px;
+    background: linear-gradient(145deg, var(--accent) 0%, var(--accent-dim) 100%);
+    box-shadow: 0 0 80px var(--accent-glow), 0 0 160px var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .splash-icon-bg::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(130deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+  }
+  .splash-flame {
+    width: 78px; height: 78px;
+    filter: drop-shadow(0 2px 16px rgba(255,255,255,0.55));
+    animation: flamePulse 2.4s ease-in-out infinite;
+    position: relative; z-index: 1;
+  }
+  @keyframes flamePulse {
+    0%,100% { transform: scale(1) rotate(-3deg); }
+    50%      { transform: scale(1.08) rotate(3deg); filter: drop-shadow(0 2px 22px rgba(255,255,255,0.8)); }
+  }
+  .splash-ring { position: absolute; border-radius: 50%; border: 1.5px solid var(--accent-glow); animation: ringOut 2.2s ease-out infinite; }
+  .splash-ring-1 { width: 190px; height: 190px; }
+  .splash-ring-2 { width: 260px; height: 260px; animation-delay: 0.55s; }
+  .splash-ring-3 { width: 340px; height: 340px; animation-delay: 1.1s; border-color: var(--accent-soft); }
+  @keyframes ringOut {
+    0%   { opacity: 0.8; transform: scale(0.8); }
+    100% { opacity: 0;   transform: scale(1.2); }
+  }
+  .splash-title {
+    font-family: 'Cairo', sans-serif; font-weight: 900; font-size: 56px;
+    color: var(--accent); letter-spacing: 3px; line-height: 1; margin-top: 30px;
+    animation: splashFadeUp 0.5s ease 0.6s both;
+    text-shadow: 0 0 50px var(--accent-glow);
+  }
+  .splash-sub {
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 7px;
+    color: var(--text-dim); margin-top: 5px;
+    animation: splashFadeUp 0.5s ease 0.8s both;
+  }
+  .splash-tagline {
+    font-family: 'Cairo', sans-serif; font-size: 13px; color: var(--text-dim);
+    margin-top: 14px; animation: splashFadeUp 0.5s ease 1s both;
+    text-align: center; max-width: 240px; line-height: 1.7;
+  }
+  .splash-progress-wrap { margin-top: 48px; width: 150px; animation: splashFadeUp 0.4s ease 1.1s both; }
+  .splash-progress-track { height: 2px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+  .splash-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 2px; width: 0%;
+    box-shadow: 0 0 8px var(--accent-glow); transition: width 0.04s linear;
+  }
+  .splash-dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+  .splash-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border2); transition: background 0.2s; }
+  .splash-dot.active { background: var(--accent); }
+  @keyframes splashFadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .particle {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: var(--accent); animation: particleFloat linear infinite; opacity: 0;
+  }
+  @keyframes particleFloat {
+    0%   { transform: translateY(0) scale(1); opacity: 0; }
+    12%  { opacity: 0.6; }
+    88%  { opacity: 0.2; }
+    100% { transform: translateY(-280px) scale(0.2); opacity: 0; }
+  }
+
+  /* ===== THEME SWITCHER ===== */
+  .theme-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .theme-card {
+    border: 2px solid var(--border2); border-radius: 14px; padding: 14px 10px;
+    cursor: pointer; transition: all 0.2s; text-align: center; position: relative;
+    overflow: hidden;
+  }
+  .theme-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.2s; }
+  .theme-card.active { border-color: var(--accent); }
+  .theme-card.active::after {
+    content: '✓'; position: absolute; top: 6px; left: 6px; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--accent); color: var(--black);
+    font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+    line-height: 18px;
+  }
+  .theme-preview { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+  .theme-dot { width: 16px; height: 16px; border-radius: 50%; }
+  .theme-name { font-size: 12px; font-weight: 700; color: var(--text-dim); font-family: 'Cairo', sans-serif; }
+
+  /* ===== CARD ENTRANCE ANIMATIONS ===== */
+  .card { animation: cardIn 0.4s cubic-bezier(0.34,1.2,0.64,1) both; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.19s; }
+  .card:nth-child(4) { animation-delay: 0.26s; }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .habit-row { transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1); }
+  .habit-row.done { animation: habitDone 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes habitDone {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+  .nav-btn.active { animation: navPop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes navPop {
+    from { transform: scale(0.9); } to { transform: scale(1); }
+  }
+  .logo-ar { animation: logoGlow 3s ease-in-out infinite; }
+  @keyframes logoGlow {
+    0%,100% { text-shadow: 0 0 20px var(--accent-glow); }
+    50%      { text-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--accent-soft); }
+  }
+  .save-btn { position: relative; overflow: hidden; }
+  .save-btn::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transform: skewX(-20deg); animation: shimmer 2.5s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0% { left: -100%; } 60%,100% { left: 160%; } }
+  .ring-complete { animation: ringComplete 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes ringComplete { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+  /* ===== CONTENT OS STYLES (namespaced) ===== */
+  .cos-section {
+    background: var(--cos-bg);
+    min-height: 100%;
+    direction: ltr;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* ContentOS hero */
+  .cos-hero {
+    padding: 32px 0 24px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .cos-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
+    direction: ltr;
+  }
+  .cos-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);} }
+  .cos-hero h1 {
+    font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(32px,5vw,56px);
+    line-height: .95; letter-spacing: 2px; margin-bottom: 14px; color: var(--text);
+    direction: ltr;
+  }
+  .cos-hero h1 em { font-style: normal; color: var(--gold); }
+  .cos-hero-sub { font-size: 14px; color: var(--text-dim); max-width: 500px; line-height: 1.6; margin-bottom: 28px; direction: ltr; }
+
+  /* ContentOS nav tabs */
+  .cos-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap; direction: ltr;
+    margin-bottom: 22px;
+  }
+  .cos-tab {
+    padding: 8px 18px; border-radius: 30px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    color: var(--text-dim); border: 1px solid var(--border); background: var(--surface);
+    font-family: 'Cairo', sans-serif; transition: all .2s;
+  }
+  .cos-tab:hover { color: var(--text); border-color: var(--border2); }
+  .cos-tab.active { color: var(--black); background: var(--gold); border-color: var(--gold); }
+  .cos-badge {
+    background: var(--red); color: #fff;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 20px; margin-left: 6px;
+  }
+
+  /* ContentOS sub-screens */
+  .cos-screen { display: none; animation: fadeUp 0.3s ease; }
+  .cos-screen.active { display: block; }
+
+  /* Week strip */
+  .cos-week-strip {
+    display: grid; grid-template-columns: repeat(6,1fr); gap: 10px;
+    margin-bottom: 22px; direction: ltr;
+  }
+  @media (max-width: 600px) { .cos-week-strip { grid-template-columns: repeat(3,1fr); } }
+  .cos-day-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 12px 14px;
+    cursor: pointer; transition: all .2s; position: relative; overflow: hidden;
+  }
+  .cos-day-card::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .25s; border-radius:14px; }
+  .cos-day-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .cos-day-card.active { border-color: var(--gold-dim); }
+  .cos-day-card.active::before { opacity:.04; background: var(--gold); }
+  .cos-day-card.grind { border-color: var(--gold-dim); }
+  .cos-day-card.grind::before { background: var(--gold); opacity:.06; }
+  .cos-grind-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--gold); color: var(--black);
+    font-size: 9px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 20px;
+  }
+  .cos-day-dot {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-bottom: 10px;
+  }
+  .cos-day-name { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; margin-bottom: 2px; color: var(--text); }
+  .cos-day-type { font-size: 11px; color: var(--text-dim); line-height: 1.3; }
+  .cos-effort-bar { margin-top: 10px; height: 3px; border-radius: 2px; background: var(--border2); overflow: hidden; }
+  .cos-effort-fill { height: 100%; border-radius: 2px; transition: width .6s ease; }
+
+  /* Detail panel */
+  .cos-detail-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; overflow: hidden; margin-bottom: 14px;
+  }
+  .cos-detail-header {
+    padding: 22px 24px; display: flex; align-items: flex-start; gap: 16px;
+    border-bottom: 1px solid var(--border); direction: ltr;
+  }
+  .cos-detail-icon {
+    width: 50px; height: 50px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .cos-detail-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 4px; color: var(--text); }
+  .cos-detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .cos-meta-chip {
+    display: flex; align-items: center; gap: 4px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--text-dim);
+  }
+  .cos-meta-chip b { color: var(--text); }
+  .cos-detail-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; direction: ltr; }
+  @media (max-width: 600px) { .cos-detail-body { grid-template-columns: 1fr; } }
+  .cos-detail-col { padding: 22px 24px; border-right: 1px solid var(--border); }
+  .cos-detail-col:last-child { border-right: none; }
+  .cos-col-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 14px;
+  }
+  .cos-step-list { list-style: none; }
+  .cos-step-item {
+    display: flex; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid var(--border); align-items: flex-start;
+  }
+  .cos-step-item:last-child { border-bottom: none; }
+  .cos-step-num {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--text-dim);
+  }
+  .cos-step-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .cos-step-note { font-size: 11px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+
+  /* Hook box */
+  .cos-hook-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-top: 4px;
+  }
+  .cos-hook-label { font-size: 10px; color: var(--gold); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+  .cos-hook-template { font-size: 13px; line-height: 1.6; color: var(--text); }
+  .cos-hook-fill { color: var(--gold); border-bottom: 1px dashed var(--gold-dim); padding: 0 1px; }
+  .cos-idea-source {
+    background: var(--surface2); border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0; padding: 12px 14px; margin-top: 10px;
+  }
+  .cos-idea-source .label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .cos-idea-source p { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Grind flow */
+  .cos-flow-wrap { max-width: 900px; margin: 0 auto; direction: ltr; }
+  .cos-flow-node {
+    display: flex; gap: 16px; align-items: flex-start; position: relative;
+    margin-bottom: 6px;
+  }
+  .cos-flow-node::after {
+    content: ''; position: absolute; left: 21px; top: 46px;
+    width: 1px; height: calc(100% - 22px);
+    background: linear-gradient(to bottom, var(--border2), transparent);
+  }
+  .cos-flow-node:last-child::after { display: none; }
+  .cos-flow-left { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+  .cos-flow-circle {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px;
+    flex-shrink: 0; z-index: 1; position: relative; border: 2px solid;
+  }
+  .cos-flow-body {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; flex: 1; margin-bottom: 16px;
+    transition: border-color .2s;
+  }
+  .cos-flow-body:hover { border-color: var(--border2); }
+  .cos-flow-time { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .cos-flow-title { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; margin-bottom: 5px; color: var(--text); }
+  .cos-flow-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 8px; }
+  .cos-flow-tips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .cos-flow-tip {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 3px 9px; font-size: 10px; color: var(--text-dim);
+  }
+
+  /* Script lab */
+  .cos-script-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; direction: ltr; }
+  .cos-script-tab {
+    padding: 7px 16px; border-radius: 10px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    color: var(--text-dim); border: 1px solid var(--border); background: none;
+    font-family: 'Cairo', sans-serif; transition: all .2s;
+  }
+  .cos-script-tab:hover { color: var(--text); border-color: var(--border2); }
+  .cos-script-tab.active { color: var(--black); background: var(--gold); border-color: var(--gold); }
+  .cos-script-panel { display: none; animation: fadeUp .25s ease; }
+  .cos-script-panel.active { display: block; }
+  .cos-script-section { margin-bottom: 24px; }
+  .cos-script-section h3 {
+    font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 18px; letter-spacing: 1px;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--text); direction: ltr;
+  }
+  .cos-script-section h3::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .cos-formula-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .cos-formula-row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 8px 0; border-bottom: 1px solid var(--border); direction: ltr;
+  }
+  .cos-formula-row:last-child { border-bottom: none; }
+  .cos-formula-label {
+    min-width: 80px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .cos-formula-val { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .cos-formula-val em { font-style: normal; color: var(--gold); }
+  .cos-hook-examples { display: flex; flex-direction: column; gap: 8px; }
+  .cos-hook-ex {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; cursor: pointer;
+    transition: all .2s; direction: ltr;
+  }
+  .cos-hook-ex:hover { border-color: var(--gold-dim); background: var(--accent-soft); }
+  .cos-hook-ex .type { font-size: 9px; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+  .cos-hook-ex .text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .cos-hook-ex .why { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .cos-idea-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; direction: ltr; }
+  @media (max-width: 500px) { .cos-idea-grid { grid-template-columns: 1fr; } }
+  .cos-idea-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+  }
+  .cos-idea-card .src { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .cos-idea-card ul { padding-left: 14px; }
+  .cos-idea-card li { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 3px; }
+
+  /* ContentOS Tracker */
+  .cos-tracker-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; direction: ltr; }
+  .cos-tracker-header h2 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 28px; letter-spacing: 2px; color: var(--text); }
+  .cos-week-nav { display: flex; align-items: center; gap: 10px; }
+  .cos-week-label { font-size: 13px; color: var(--text-dim); }
+  .cos-nav-btn {
+    width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s;
+  }
+  .cos-nav-btn:hover { border-color: var(--border2); }
+  .cos-stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; direction: ltr; }
+  @media (max-width: 550px) { .cos-stats-row { grid-template-columns: repeat(2,1fr); } }
+  .cos-stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px;
+  }
+  .cos-stat-val { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 26px; letter-spacing: 1px; margin-bottom: 2px; color: var(--text); }
+  .cos-stat-label { font-size: 11px; color: var(--text-dim); }
+  .cos-checklist { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; direction: ltr; }
+  .cos-check-day-header {
+    padding: 12px 18px; background: var(--surface2);
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .cos-check-day-name { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--text); }
+  .cos-check-day-type { font-size: 11px; color: var(--text-dim); }
+  .cos-check-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+    border-bottom: 1px solid var(--border); transition: background .15s; cursor: pointer;
+  }
+  .cos-check-row:hover { background: var(--surface2); }
+  .cos-check-row:last-child { border-bottom: none; }
+  .cos-check-box {
+    width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border2);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all .15s; font-size: 10px; color: var(--black);
+  }
+  .cos-check-row.done .cos-check-box { background: var(--gold); border-color: var(--gold); }
+  .cos-check-row.done .cos-check-text { text-decoration: line-through; color: var(--text-dim); }
+  .cos-check-text { font-size: 13px; color: var(--text); }
+  .cos-prog-bar { height: 3px; background: var(--border); margin: 0 18px 0; }
+  .cos-prog-fill { height: 100%; border-radius: 2px; transition: width .4s ease; }
+
+  /* Fade-in */
+  .cos-fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .cos-fade-in.visible { opacity: 1; transform: none; }
+
+  /* grind hero */
+  .cos-grind-hero { padding: 0 0 24px; text-align: center; direction: ltr; }
+  .cos-grind-hero h2 {
+    font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: clamp(26px,4vw,48px);
+    letter-spacing: 2px; margin-bottom: 10px; line-height: 1; color: var(--text);
+  }
+  .cos-grind-hero h2 span { color: var(--gold); }
+  .cos-grind-hero p { color: var(--text-dim); font-size: 14px; max-width: 480px; margin: 0 auto; }
+
+  /* section title */
+  .cos-section-title {
+    font-family: 'Bebas Neue', sans-serif; font-weight: 400;
+    font-size: clamp(20px,3vw,30px); letter-spacing: 2px;
+    margin-bottom: 6px; color: var(--text); direction: ltr;
+  }
+  .cos-section-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; direction: ltr; }
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-logo-wrap">
+    <div class="splash-ring splash-ring-1"></div>
+    <div class="splash-ring splash-ring-2"></div>
+    <div class="splash-ring splash-ring-3"></div>
+    <div class="splash-icon-bg">
+      <svg class="splash-flame" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.95)"/>
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.6)"/>
+          </linearGradient>
+        </defs>
+        <path d="M50,5 C50,5 75,30 75,55 C75,70 68,82 58,88 C62,78 60,68 53,62 C56,72 50,82 42,86 C32,80 25,68 25,55 C25,40 38,20 50,5 Z" fill="url(#fg1)"/>
+        <path d="M50,50 C50,50 62,62 62,75 C62,85 57,92 50,95 C43,92 38,85 38,75 C38,65 44,55 50,50 Z" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="35" cy="38" r="5" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="splash-title">عزم</div>
+  <div class="splash-sub">AZEM · SYSTEM</div>
+  <div class="splash-tagline">من القاع لأقصى طاقتك</div>
+  <div class="splash-progress-wrap">
+    <div class="splash-progress-track">
+      <div class="splash-progress-fill" id="splashBar"></div>
+    </div>
+    <div class="splash-dots">
+      <div class="splash-dot active" id="sd1"></div>
+      <div class="splash-dot" id="sd2"></div>
+      <div class="splash-dot" id="sd3"></div>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-ar">عزم</div>
+      <div class="logo-en" id="logoSubtitle">AZEM · 75 DAYS</div>
+    </div>
+    <div class="day-badge" id="dayBadge">اليوم ١</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showSection('today')">اليوم</button>
+  <button class="nav-btn" onclick="showSection('week')">الأسبوع</button>
+  <button class="nav-btn" onclick="showSection('progress')">التقدم</button>
+  <button class="nav-btn" onclick="showSection('challenge')" id="navChallenge">التحدي</button>
+  <button class="nav-btn" onclick="showSection('content')">📲 Content OS</button>
+  <button class="nav-btn" onclick="showSection('setup')">الإعدادات</button>
+</nav>
+
+<main class="main">
+
+  <!-- ===== اليوم ===== -->
+  <section class="section active" id="section-today">
+    <div class="sec-heading" id="todayDateLabel">الأحد، ١٩ أبريل</div>
+    <div class="sec-sub">كل يوم جديد — فرصة جديدة</div>
+
+    <div class="card">
+      <div class="score-area">
+        <div class="ring-container">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <circle class="ring-bg" cx="45" cy="45" r="35"/>
+            <circle class="ring-fill" id="ringFill" cx="45" cy="45" r="35"/>
+          </svg>
+          <div class="ring-text">
+            <span id="ringPct">٠٪</span>
+            <small>اليوم</small>
+          </div>
+        </div>
+        <div class="score-label">
+          <strong id="scoreNum">٠/٠</strong>
+          عادة مكتملة<br>
+          <span id="scoreMsg" style="color:var(--text-dim)">ابدأ بتحديد عاداتك</span>
+        </div>
+      </div>
+      <div class="habits-list" id="habitsList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 مهام اليوم</div>
+      <button class="add-btn" style="width:100%;border-radius:10px;padding:12px;font-size:15px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openTaskModal()">
+        <span style="font-size:20px;line-height:1">+</span> مهمة جديدة
+      </button>
+      <div id="taskList"></div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" style="display:none;position:fixed;inset:0;z-index:500;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)" onclick="closeTaskModalBg(event)">
+      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:0;width:100%;max-width:600px;animation:slideUp 0.25s ease" id="taskModalInner">
+        <div style="width:40px;height:4px;background:var(--border2);border-radius:2px;margin:14px auto 0"></div>
+        <div style="text-align:center;font-weight:900;font-size:18px;color:var(--gold);padding:14px 20px 0;font-family:'Cairo',sans-serif">مهمة جديدة</div>
+        <div style="padding:16px 20px 28px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:6px;text-align:right">اسم المهمة</div>
+            <input class="task-input" id="taskModalName" placeholder="وش ناقي تسوي؟" style="width:100%;font-size:15px;padding:12px 14px">
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;text-align:right">النوع</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px" id="typeButtons">
+              <button class="type-btn active" data-type="دراسة" onclick="selectType(this)">📚 دراسة</button>
+              <button class="type-btn" data-type="عمل" onclick="selectType(this)">🧑‍💼 عمل</button>
+              <button class="type-btn" data-type="تمرين" onclick="selectType(this)">💪 تمرين</button>
+              <button class="type-btn" data-type="شخصي" onclick="selectType(this)">✨ شخصي</button>
+              <button class="type-btn" data-type="محتوى" onclick="selectType(this)">📲 محتوى</button>
+              <button class="type-btn" data-type="أخرى" onclick="selectType(this)">📌 أخرى</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;text-align:right">الأولوية</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="priorityButtons">
+              <button class="priority-btn" data-priority="عالية" data-color="#e05555" onclick="selectPriority(this)" style="border-color:#e05555">🔴 عالية</button>
+              <button class="priority-btn active" data-priority="متوسطة" data-color="#e0a030" onclick="selectPriority(this)" style="border-color:var(--gold);background:rgba(201,168,76,0.12);color:var(--text)">🟡 متوسطة</button>
+              <button class="priority-btn" data-priority="منخفضة" data-color="#2dbe6c" onclick="selectPriority(this)" style="border-color:#2dbe6c">🟢 منخفضة</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:6px;text-align:right">الأسبوع</div>
+            <div style="display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;direction:ltr">
+              <button onclick="changeWeekModal(-1)" style="background:var(--border2);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>
+              <div style="flex:1;text-align:center;font-weight:900;font-size:16px;color:var(--text);font-family:'Cairo',sans-serif" id="weekDisplay">١</div>
+              <button onclick="changeWeekModal(1)" style="background:var(--border2);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
+            </div>
+          </div>
+          <button class="add-btn" style="width:100%;padding:14px;font-size:16px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="confirmAddTask()">
+            <span>+</span> أضف
+          </button>
+          <button onclick="closeTaskModal()" style="background:none;border:1px dashed var(--border2);color:var(--text-dim);width:100%;padding:12px;border-radius:10px;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧠 الحالة الذهنية</div>
+      <div class="mood-row">
+        <div class="mood-label">المزاج</div>
+        <div class="mood-btns" id="moodBtns"></div>
+      </div>
+      <div class="mood-row">
+        <div class="mood-label">الدافعية</div>
+        <div class="mood-btns" id="motivBtns"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✍️ يومياتي</div>
+      <div class="journal-grid">
+        <div class="journal-field">
+          <label>إنجاز اليوم</label>
+          <textarea class="journal-textarea" id="journalWin" placeholder="ما الذي سار بشكل جيد؟"></textarea>
+        </div>
+        <div class="journal-field">
+          <label>ما يمكن تحسينه</label>
+          <textarea class="journal-textarea" id="journalImprove" placeholder="ما الذي يمكن أن يكون أفضل؟"></textarea>
+        </div>
+        <div class="journal-field">
+          <label>ملاحظات</label>
+          <textarea class="journal-textarea" id="journalNotes" placeholder="أفكار، تذكيرات..."></textarea>
+        </div>
+        <div class="journal-field">
+          <label>أنا ممتن لـ</label>
+          <textarea class="journal-textarea" id="journalGrateful" placeholder="علام أنت ممتن اليوم؟"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveDay()">حفظ اليوم ✓</button>
+  </section>
+
+  <!-- ===== الأسبوع ===== -->
+  <section class="section" id="section-week">
+    <div class="sec-heading">هذا الأسبوع</div>
+    <div class="sec-sub">اختر أي يوم لمراجعته أو تعديله</div>
+    <div class="week-days" id="weekDaysNav"></div>
+    <div id="weekDayContent"></div>
+  </section>
+
+  <!-- ===== التقدم ===== -->
+  <section class="section" id="section-progress">
+    <div class="sec-heading">تقدمك</div>
+    <div class="sec-sub">الأرقام لا تكذب</div>
+
+    <div class="streak-row">
+      <div class="streak-fire">🔥</div>
+      <div>
+        <div class="streak-num" id="streakNum">٠</div>
+        <small>يوم متواصل</small>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="statDays">٠</div><div class="stat-lbl">أيام مسجلة</div></div>
+      <div class="stat-box"><div class="stat-num" id="statAvg">٠٪</div><div class="stat-lbl">المتوسط</div></div>
+      <div class="stat-box"><div class="stat-num" id="statBest">٠٪</div><div class="stat-lbl">أفضل يوم</div></div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">آخر ٧ أيام — نسبة الإنجاز</div>
+      <div class="bar-chart" id="weekBarChart"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 تفاصيل العادات</div>
+      <div id="habitBreakdown"></div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">المزاج والدافعية — آخر ٧ أيام</div>
+      <div class="bar-chart" id="moodBarChart"></div>
+      <div style="display:flex;gap:16px;font-size:12px;color:var(--text-dim);margin-top:10px;font-weight:600">
+        <span><span class="legend-dot" style="background:var(--gold)"></span>المزاج</span>
+        <span><span class="legend-dot" style="background:#5b7ff5"></span>الدافعية</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== التحدي ===== -->
+  <section class="section" id="section-challenge">
+    <div class="sec-heading" id="challengeTitle">تحدي ٧٥ يوم</div>
+    <div class="sec-sub">كل مربع يوم من حياتك — انظماطك مرئي أمامك</div>
+
+    <div class="streak-row">
+      <div class="streak-fire">⚡</div>
+      <div>
+        <div class="streak-num" id="challengeDay">٠</div>
+        <small>اليوم الحالي</small>
+      </div>
+      <div style="margin-right:auto;margin-left:0;text-align:left">
+        <div style="font-weight:900;font-size:22px;color:var(--text-dim)" id="challengePct">٠٪</div>
+        <small style="font-size:11px;color:var(--text-faint);font-weight:600">مكتمل</small>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="legend-dot" style="background:var(--green)"></span>٨٠٪ فأكثر</span>
+      <span><span class="legend-dot" style="background:var(--gold)"></span>٦٠–٧٩٪</span>
+      <span><span class="legend-dot" style="background:var(--amber)"></span>٤٠–٥٩٪</span>
+      <span><span class="legend-dot" style="background:#b03030"></span>أقل من ٤٠٪</span>
+      <span><span class="legend-dot" style="background:var(--surface2);border:1px solid var(--border)"></span>فارغ</span>
+    </div>
+
+    <div class="day-grid" id="challengeGrid"></div>
+  </section>
+
+  <!-- ===== CONTENT OS ===== -->
+  <section class="section" id="section-content">
+    <div class="cos-section">
+
+      <!-- ContentOS sub-nav -->
+      <div class="cos-hero">
+        <div class="cos-eyebrow"><span></span>Content OS · نظام المحتوى</div>
+        <h1>6 posts.<br><em>1 grind day.</em><br>All week handled.</h1>
+        <p class="cos-hero-sub">Your complete content system — each day has a different job. One tab for everything.</p>
+      </div>
+
+      <div class="cos-tabs">
+        <button class="cos-tab active" onclick="cosShowScreen('overview')">📅 Weekly Plan</button>
+        <button class="cos-tab" onclick="cosShowScreen('grind')">🔥 Grind Day</button>
+        <button class="cos-tab" onclick="cosShowScreen('script')">✍️ Script Lab</button>
+        <button class="cos-tab" onclick="cosShowScreen('tracker')">✅ Tracker <span class="cos-badge" id="cosBadge">0</span></button>
+      </div>
+
+      <!-- Overview -->
+      <div class="cos-screen active" id="cos-screen-overview">
+        <div class="cos-week-strip" id="cosWeekStrip"></div>
+        <div id="cosDetailSection"></div>
+      </div>
+
+      <!-- Grind Day -->
+      <div class="cos-screen" id="cos-screen-grind">
+        <div class="cos-grind-hero">
+          <div class="cos-eyebrow" style="margin:0 auto 16px;display:inline-flex;"><span></span>Every Saturday</div>
+          <h2>Your <span>Grind Day</span><br>Blueprint</h2>
+          <p>One focused day. Six pieces of content ready to schedule. Follow this exact order every week.</p>
+        </div>
+        <div class="cos-flow-wrap" id="cosFlowWrap"></div>
+      </div>
+
+      <!-- Script Lab -->
+      <div class="cos-screen" id="cos-screen-script">
+        <div class="cos-section-title">Script Lab</div>
+        <div class="cos-section-sub">Find ideas, write hooks, and structure any piece of content in minutes.</div>
+        <div class="cos-script-tabs" id="cosScriptTabs"></div>
+        <div id="cosScriptPanels"></div>
+      </div>
+
+      <!-- Tracker -->
+      <div class="cos-screen" id="cos-screen-tracker">
+        <div class="cos-tracker-header">
+          <h2>Weekly Tracker</h2>
+          <div class="cos-week-nav">
+            <button class="cos-nav-btn" onclick="cosChangeWeek(-1)">‹</button>
+            <span class="cos-week-label" id="cosWeekLabel"></span>
+            <button class="cos-nav-btn" onclick="cosChangeWeek(1)">›</button>
+          </div>
+        </div>
+        <div class="cos-stats-row" id="cosStatsRow"></div>
+        <div class="cos-checklist" id="cosChecklistWrap"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== الإعدادات ===== -->
+  <section class="section" id="section-setup">
+    <div class="sec-heading">الإعدادات</div>
+    <div class="sec-sub">اضبط نظام عزم الخاص بك</div>
+
+    <div class="card">
+      <div class="card-title">👤 ملفك الشخصي</div>
+      <div class="setup-row">
+        <label>اسمك</label>
+        <input class="setup-input" id="setupName" placeholder="مثال: رياض">
+      </div>
+      <div class="setup-row">
+        <label>تاريخ بداية التحدي</label>
+        <input class="setup-input" id="setupStartDate" type="date">
+      </div>
+      <div class="setup-row">
+        <label>مدة التحدي</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:2px" id="durationGrid"></div>
+      </div>
+      <button class="save-btn" onclick="saveSetup()">حفظ الإعدادات</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ عاداتك</div>
+      <div class="sec-sub" style="margin-bottom:12px">تعديل أو حذف أو إضافة عاداتك</div>
+      <div id="setupHabitList"></div>
+      <div class="task-input-row" style="margin-top:12px">
+        <input class="task-input" id="habitInput" placeholder="أضف عادة جديدة...">
+        <button class="add-btn" onclick="addHabit()">إضافة</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎨 ثيم التطبيق</div>
+      <div class="theme-grid">
+        <div class="theme-card" data-theme="gold" onclick="setTheme('gold')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#0a0a0a"></div>
+            <div class="theme-dot" style="background:#c9a84c"></div>
+            <div class="theme-dot" style="background:#f0ede6"></div>
+          </div>
+          <div class="theme-name">ذهبي</div>
+        </div>
+        <div class="theme-card" data-theme="blue" onclick="setTheme('blue')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#05090f"></div>
+            <div class="theme-dot" style="background:#4d8ef5"></div>
+            <div class="theme-dot" style="background:#e8f0ff"></div>
+          </div>
+          <div class="theme-name">أزرق</div>
+        </div>
+        <div class="theme-card" data-theme="pink" onclick="setTheme('pink')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#0f080f"></div>
+            <div class="theme-dot" style="background:#e870c8"></div>
+            <div class="theme-dot" style="background:#fce8fc"></div>
+          </div>
+          <div class="theme-name">وردي</div>
+        </div>
+        <div class="theme-card" data-theme="white" onclick="setTheme('white')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#f5f4f0"></div>
+            <div class="theme-dot" style="background:#1a1a1a"></div>
+            <div class="theme-dot" style="background:#666"></div>
+          </div>
+          <div class="theme-name">أبيض</div>
+        </div>
+        <div class="theme-card" data-theme="forest" onclick="setTheme('forest')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#060d08"></div>
+            <div class="theme-dot" style="background:#4caf72"></div>
+            <div class="theme-dot" style="background:#e0f0e6"></div>
+          </div>
+          <div class="theme-name">غابة</div>
+        </div>
+        <div class="theme-card" data-theme="ember" onclick="setTheme('ember')">
+          <div class="theme-preview">
+            <div class="theme-dot" style="background:#0f0805"></div>
+            <div class="theme-dot" style="background:#f5703a"></div>
+            <div class="theme-dot" style="background:#fdf0e6"></div>
+          </div>
+          <div class="theme-name">جمر</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--red);background:rgba(224,85,85,0.05)">
+      <div class="card-title" style="color:var(--red)">⚠️ مسح البيانات</div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:14px;font-weight:500">هذا يحذف جميع بياناتك بشكل نهائي.</p>
+      <button onclick="resetData()" style="background:var(--red);color:white;border:none;border-radius:8px;padding:10px 22px;font-family:'Cairo',sans-serif;font-weight:900;font-size:14px;cursor:pointer;">مسح كل شيء</button>
+    </div>
+  </section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== AZEM TRACKER LOGIC =====================
+function toArabicNum(n) {
+  return String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
+
+const DEFAULT_HABITS = [
+  { id: 1, name: 'الصلوات الخمس', emoji: '🕋' },
+  { id: 2, name: '٥ أحزاب قرآن', emoji: '📿' },
+  { id: 3, name: 'استغفار', emoji: '☪️' },
+  { id: 4, name: 'الدراسة / التعلم', emoji: '📖' },
+  { id: 5, name: 'العمل التجاري', emoji: '🧑‍💼' },
+  { id: 6, name: 'التمرين', emoji: '💪' },
+  { id: 7, name: 'القراءة', emoji: '📗' },
+  { id: 8, name: 'نشر ريل', emoji: '📲' },
+  { id: 9, name: 'التأمل / اليوميات', emoji: '✍️' },
+  { id: 10, name: 'الاستيقاظ مبكراً', emoji: '⏰' },
+];
+
+let state = {
+  name: '',
+  startDate: null,
+  duration: 75,
+  theme: 'gold',
+  habits: JSON.parse(JSON.stringify(DEFAULT_HABITS)),
+  days: {},
+};
+
+function save() { localStorage.setItem('azem_state', JSON.stringify(state)); }
+function load() {
+  const raw = localStorage.getItem('azem_state');
+  if (raw) { try { state = { ...state, ...JSON.parse(raw) }; } catch(e){} }
+}
+
+function today() { const d = new Date(); return fmtDate(d); }
+function fmtDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function parseDate(str) {
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y,m-1,d);
+}
+function getDayLabel(str) {
+  const d = parseDate(str);
+  const ar = ['أحد','إثن','ثلا','أرب','خمس','جمع','سبت'];
+  return ar[d.getDay()];
+}
+function getLongDateAr(str) {
+  const d = parseDate(str);
+  const days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return `${days[d.getDay()]}، ${d.getDate()} ${months[d.getMonth()]}`;
+}
+function getDayNum(str) { return parseDate(str).getDate(); }
+function getChallengeDay() {
+  if (!state.startDate) return 1;
+  const dur = state.duration || 75;
+  const start = parseDate(state.startDate);
+  const now = new Date(); now.setHours(0,0,0,0);
+  return Math.max(1, Math.min(dur, Math.floor((now - start) / 86400000) + 1));
+}
+function getDayData(ds) {
+  if (!state.days[ds]) state.days[ds] = { habits: {}, tasks: [], mood: 0, motiv: 0, journal: { win:'', improve:'', notes:'', grateful:'' } };
+  return state.days[ds];
+}
+function getDayScore(ds) {
+  const data = state.days[ds];
+  if (!data || !state.habits.length) return 0;
+  return Math.round(state.habits.filter(h => data.habits[h.id]).length / state.habits.length * 100);
+}
+
+let activeDay = today();
+
+// NAV
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  const map = {today:0,week:1,progress:2,challenge:3,content:4,setup:5};
+  if (map[id] !== undefined) document.querySelectorAll('.nav-btn')[map[id]].classList.add('active');
+  if (id === 'week') renderWeek();
+  if (id === 'progress') renderProgress();
+  if (id === 'challenge') renderChallenge();
+  if (id === 'setup') renderSetup();
+  if (id === 'content') { cosInit(); }
+}
+
+// TODAY
+function renderToday(ds) {
+  activeDay = ds || today();
+  const data = getDayData(activeDay);
+  document.getElementById('todayDateLabel').textContent = getLongDateAr(activeDay);
+  renderHabitsList(data);
+  renderTaskList(data);
+  renderMoodBtns(data);
+  document.getElementById('journalWin').value = data.journal.win || '';
+  document.getElementById('journalImprove').value = data.journal.improve || '';
+  document.getElementById('journalNotes').value = data.journal.notes || '';
+  document.getElementById('journalGrateful').value = data.journal.grateful || '';
+  setTimeout(updateRing, 150);
+  document.getElementById('dayBadge').textContent = 'اليوم ' + toArabicNum(getChallengeDay());
+}
+
+function renderHabitsList(data) {
+  const list = document.getElementById('habitsList');
+  list.innerHTML = '';
+  state.habits.forEach(h => {
+    const done = !!data.habits[h.id];
+    const row = document.createElement('div');
+    row.className = 'habit-row' + (done ? ' done' : '');
+    row.innerHTML = `<div class="habit-emoji">${h.emoji}</div><div class="habit-name">${h.name}</div><div class="habit-check">${done ? '✓' : ''}</div>`;
+    row.onclick = () => { data.habits[h.id] = !data.habits[h.id]; save(); renderHabitsList(data); updateRing(); };
+    list.appendChild(row);
+  });
+}
+
+function updateRing() {
+  const data = getDayData(activeDay);
+  const total = state.habits.length;
+  const done = total ? state.habits.filter(h => data.habits[h.id]).length : 0;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('ringFill').style.strokeDashoffset = 220 - (220 * pct / 100);
+  document.getElementById('ringPct').textContent = toArabicNum(pct) + '٪';
+  document.getElementById('scoreNum').textContent = toArabicNum(done) + '/' + toArabicNum(total);
+  const msgs = ['ابدأ الآن. لا أعذار.', 'استمر.', 'أكثر من النصف!', 'تقريباً وصلت!', 'يوم مثالي! 🔥'];
+  document.getElementById('scoreMsg').textContent = msgs[pct < 20 ? 0 : pct < 50 ? 1 : pct < 75 ? 2 : pct < 100 ? 3 : 4];
+  const fill = document.getElementById('ringFill');
+  fill.style.stroke = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--gold)' : pct >= 40 ? 'var(--amber)' : 'var(--red)';
+}
+
+function renderTaskList(data) {
+  const list = document.getElementById('taskList');
+  list.innerHTML = '';
+  (data.tasks || []).forEach((t, i) => {
+    const item = document.createElement('div');
+    item.className = 'task-item' + (t.done ? ' done' : '');
+    const priorityColors = { 'عالية': '#e05555', 'متوسطة': '#e0a030', 'منخفضة': '#2dbe6c' };
+    const pColor = priorityColors[t.priority] || 'var(--text-faint)';
+    const metaHtml = (t.type || t.priority || t.week) ? `<div class="task-meta">
+      ${t.type ? `<span class="task-meta-tag" style="background:var(--accent-soft);color:var(--gold);padding:2px 7px;border-radius:20px">${t.type}</span>` : ''}
+      ${t.priority ? `<span class="task-meta-tag" style="color:${pColor}">● ${t.priority}</span>` : ''}
+      ${t.week ? `<span class="task-meta-tag">أسبوع ${toArabicNum(t.week)}</span>` : ''}
+    </div>` : '';
+    item.innerHTML = `<div class="task-check">${t.done ? '✓' : ''}</div><div style="flex:1"><div class="task-text">${t.text}</div>${metaHtml}</div><button class="task-del" onclick="event.stopPropagation();deleteTask(${i})">×</button>`;
+    item.onclick = () => { data.tasks[i].done = !data.tasks[i].done; save(); renderTaskList(data); };
+    list.appendChild(item);
+  });
+}
+
+let taskWeek = 1;
+let taskType = 'دراسة';
+let taskPriority = 'متوسطة';
+
+function openTaskModal() {
+  taskWeek = 1; taskType = 'دراسة'; taskPriority = 'متوسطة';
+  document.getElementById('taskModalName').value = '';
+  document.getElementById('weekDisplay').textContent = toArabicNum(1);
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === 'دراسة'));
+  document.querySelectorAll('.priority-btn').forEach(b => {
+    const isActive = b.dataset.priority === 'متوسطة';
+    b.classList.toggle('active', isActive);
+    if (isActive) { b.style.background = 'rgba(201,168,76,0.12)'; b.style.color = 'var(--text)'; }
+    else { b.style.background = 'var(--surface2)'; b.style.color = 'var(--text-dim)'; }
+  });
+  const modal = document.getElementById('taskModal');
+  modal.style.display = 'flex';
+  setTimeout(() => document.getElementById('taskModalName').focus(), 300);
+}
+function closeTaskModal() { document.getElementById('taskModal').style.display = 'none'; }
+function closeTaskModalBg(e) { if (e.target === document.getElementById('taskModal')) closeTaskModal(); }
+function selectType(btn) {
+  taskType = btn.dataset.type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selectPriority(btn) {
+  taskPriority = btn.dataset.priority;
+  document.querySelectorAll('.priority-btn').forEach(b => {
+    b.classList.remove('active'); b.style.background = 'var(--surface2)'; b.style.color = 'var(--text-dim)';
+  });
+  btn.classList.add('active');
+  btn.style.background = 'rgba(201,168,76,0.12)'; btn.style.color = 'var(--text)';
+}
+function changeWeekModal(delta) {
+  taskWeek = Math.max(1, Math.min(15, taskWeek + delta));
+  document.getElementById('weekDisplay').textContent = toArabicNum(taskWeek);
+}
+function confirmAddTask() {
+  const val = document.getElementById('taskModalName').value.trim();
+  if (!val) { document.getElementById('taskModalName').focus(); return; }
+  getDayData(activeDay).tasks.push({ text: val, done: false, type: taskType, priority: taskPriority, week: taskWeek });
+  save(); renderTaskList(getDayData(activeDay));
+  closeTaskModal();
+  showToast('تمت إضافة المهمة ✓');
+}
+function deleteTask(i) {
+  getDayData(activeDay).tasks.splice(i, 1);
+  save(); renderTaskList(getDayData(activeDay));
+}
+
+function renderMoodBtns(data) {
+  [['moodBtns','mood','sel-mood'],['motivBtns','motiv','sel-motiv']].forEach(([id, key, cls]) => {
+    const container = document.getElementById(id);
+    container.innerHTML = '';
+    for (let n = 1; n <= 10; n++) {
+      const btn = document.createElement('button');
+      btn.className = 'mood-btn' + (data[key] === n ? ' '+cls : '');
+      btn.textContent = n;
+      btn.onclick = () => { data[key] = n; save(); renderMoodBtns(data); };
+      container.appendChild(btn);
+    }
+  });
+}
+
+function saveDay() {
+  const data = getDayData(activeDay);
+  data.journal.win = document.getElementById('journalWin').value;
+  data.journal.improve = document.getElementById('journalImprove').value;
+  data.journal.notes = document.getElementById('journalNotes').value;
+  data.journal.grateful = document.getElementById('journalGrateful').value;
+  save(); showToast('تم حفظ اليوم ✓');
+}
+
+function renderWeek() {
+  const nav = document.getElementById('weekDaysNav');
+  nav.innerHTML = '';
+  const days = [];
+  const t = new Date();
+  for (let i = 6; i >= 0; i--) { const d = new Date(t); d.setDate(t.getDate()-i); days.push(fmtDate(d)); }
+  days.forEach(ds => {
+    const btn = document.createElement('div');
+    btn.className = 'week-day-btn' + (ds === today() ? ' today' : '') + (ds === activeDay ? ' active-day' : '');
+    if (state.days[ds]) btn.classList.add('has-data');
+    btn.innerHTML = `<div class="wd">${getDayLabel(ds)}</div><div class="wdn">${getDayNum(ds)}</div><div class="wds"></div>`;
+    btn.onclick = () => {
+      document.querySelectorAll('.week-day-btn').forEach(b => b.classList.remove('active-day'));
+      btn.classList.add('active-day');
+      renderWeekDayContent(ds);
+    };
+    nav.appendChild(btn);
+  });
+  renderWeekDayContent(today());
+}
+
+function renderWeekDayContent(ds) {
+  const content = document.getElementById('weekDayContent');
+  const data = getDayData(ds);
+  const score = getDayScore(ds);
+  let html = `<div class="card"><div class="card-title">📅 ${getLongDateAr(ds)} — ${toArabicNum(score)}٪</div><div style="display:flex;flex-direction:column;gap:8px">`;
+  state.habits.forEach(h => {
+    const done = !!data.habits[h.id];
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:${done?'var(--green-dim)':'var(--surface2)'};border:1px solid ${done?'var(--green)':'var(--border)'};border-radius:8px;direction:rtl">
+      <span>${h.emoji}</span><span style="flex:1;font-weight:600;color:${done?'var(--text)':'var(--text-dim)'}">${h.name}</span><span>${done?'✓':'○'}</span></div>`;
+  });
+  html += '</div>';
+  if (data.journal.win || data.journal.improve) {
+    html += `<div class="divider"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;direction:rtl">`;
+    if (data.journal.win) html += `<div><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;font-weight:700">إنجاز</div><div style="font-size:13px">${data.journal.win}</div></div>`;
+    if (data.journal.improve) html += `<div><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;font-weight:700">تحسين</div><div style="font-size:13px">${data.journal.improve}</div></div>`;
+    html += '</div>';
+  }
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+function renderProgress() {
+  const allDates = Object.keys(state.days).sort();
+  let streak = 0;
+  let d = new Date();
+  while (true) { const ds = fmtDate(d); if (getDayScore(ds) > 0) { streak++; d.setDate(d.getDate()-1); } else break; }
+  document.getElementById('streakNum').textContent = toArabicNum(streak);
+  const scores = allDates.map(d => getDayScore(d)).filter(s => s > 0);
+  document.getElementById('statDays').textContent = toArabicNum(allDates.length);
+  document.getElementById('statAvg').textContent = scores.length ? toArabicNum(Math.round(scores.reduce((a,b)=>a+b,0)/scores.length))+'٪' : '٠٪';
+  document.getElementById('statBest').textContent = scores.length ? toArabicNum(Math.max(...scores))+'٪' : '٠٪';
+
+  const last7 = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate()-i); last7.push(fmtDate(d)); }
+
+  const barChart = document.getElementById('weekBarChart');
+  barChart.innerHTML = '';
+  last7.forEach(ds => {
+    const s = getDayScore(ds);
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    col.innerHTML = `<div class="bar-val">${s ? toArabicNum(s)+'٪' : ''}</div><div class="bar-fill ${s>=80?'green':'gold'}" style="height:${Math.max(3,s*0.75)}px"></div><div class="bar-lbl">${getDayLabel(ds)}</div>`;
+    barChart.appendChild(col);
+  });
+
+  const breakdown = document.getElementById('habitBreakdown');
+  breakdown.innerHTML = '';
+  state.habits.forEach(h => {
+    const total = allDates.length;
+    const done = allDates.filter(d => state.days[d]?.habits?.[h.id]).length;
+    const pct = total ? Math.round(done/total*100) : 0;
+    const color = pct >= 70 ? 'green' : pct >= 40 ? '' : pct >= 20 ? 'amber' : 'red';
+    breakdown.innerHTML += `<div class="habit-progress-item">
+      <div class="hpi-top"><div class="hpi-name">${h.emoji} ${h.name}</div><div class="hpi-pct">${toArabicNum(pct)}٪</div></div>
+      <div class="hpi-bar"><div class="hpi-fill ${color}" style="width:${pct}%"></div></div></div>`;
+  });
+
+  const moodChart = document.getElementById('moodBarChart');
+  moodChart.innerHTML = '';
+  last7.forEach(ds => {
+    const data = state.days[ds];
+    const mood = data?.mood || 0;
+    const motiv = data?.motiv || 0;
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    col.innerHTML = `<div style="display:flex;gap:2px;align-items:flex-end;width:100%;justify-content:center">
+      <div class="bar-fill gold" style="height:${mood*6}px;flex:1;border-radius:3px 3px 0 0;min-height:${mood?'3':'0'}px"></div>
+      <div class="bar-fill" style="height:${motiv*6}px;flex:1;background:#5b7ff5;border-radius:3px 3px 0 0;min-height:${motiv?'3':'0'}px"></div>
+    </div><div class="bar-lbl">${getDayLabel(ds)}</div>`;
+    moodChart.appendChild(col);
+  });
+}
+
+function renderChallenge() {
+  const dur = state.duration || 75;
+  const curDay = getChallengeDay();
+  document.getElementById('challengeDay').textContent = toArabicNum(curDay);
+  document.getElementById('challengePct').textContent = toArabicNum(Math.round(curDay/dur*100)) + '٪';
+  document.getElementById('challengeTitle').textContent = 'تحدي ' + toArabicNum(dur) + ' يوم';
+  document.getElementById('navChallenge').textContent = toArabicNum(dur) + ' يوم';
+  const grid = document.getElementById('challengeGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= dur; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'grid-day';
+    let ds = null;
+    if (state.startDate) { const start = parseDate(state.startDate); const dd = new Date(start); dd.setDate(start.getDate()+i-1); ds = fmtDate(dd); }
+    if (i === curDay) cell.classList.add('current');
+    if (ds && state.days[ds]) {
+      const s = getDayScore(ds);
+      if (s >= 80) cell.classList.add('excellent');
+      else if (s >= 60) cell.classList.add('good');
+      else if (s >= 40) cell.classList.add('average');
+      else if (s > 0) cell.classList.add('poor');
+    }
+    cell.textContent = i;
+    grid.appendChild(cell);
+  }
+}
+
+function renderSetup() {
+  document.getElementById('setupName').value = state.name || '';
+  document.getElementById('setupStartDate').value = state.startDate || '';
+  const dg = document.getElementById('durationGrid');
+  dg.innerHTML = '';
+  [30,60,75,90,100,365].forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'duration-btn' + ((state.duration||75) === d ? ' active' : '');
+    btn.textContent = d + ' يوم';
+    btn.onclick = () => { state.duration = d; save(); renderSetup(); showToast('مدة التحدي: ' + d + ' يوم'); };
+    dg.appendChild(btn);
+  });
+  const list = document.getElementById('setupHabitList');
+  list.innerHTML = '';
+  state.habits.forEach((h, i) => {
+    const row = document.createElement('div');
+    row.className = 'task-item';
+    row.style.cursor = 'default';
+    row.innerHTML = `<span style="font-size:18px">${h.emoji}</span>
+      <input style="flex:1;background:none;border:none;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none;direction:rtl;text-align:right" value="${h.name}" onchange="state.habits[${i}].name=this.value;save()">
+      <input style="width:34px;background:none;border:none;color:var(--text-dim);font-size:16px;outline:none;text-align:center" value="${h.emoji}" onchange="state.habits[${i}].emoji=this.value.trim()||'⭐';save();renderSetup()">
+      <button class="task-del" onclick="removeHabit(${i})">×</button>`;
+    list.appendChild(row);
+  });
+}
+function addHabit() {
+  const inp = document.getElementById('habitInput');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.habits.push({ id: Date.now(), name: val, emoji: '⭐' });
+  save(); renderSetup(); inp.value = '';
+}
+function removeHabit(i) {
+  state.habits.splice(i, 1);
+  save(); renderSetup();
+}
+function saveSetup() {
+  state.name = document.getElementById('setupName').value.trim();
+  state.startDate = document.getElementById('setupStartDate').value;
+  save();
+  showToast('تم حفظ الإعدادات ✓');
+  renderToday();
+  const dur = state.duration || 75;
+  document.getElementById('navChallenge').textContent = toArabicNum(dur) + ' يوم';
+}
+function resetData() {
+  if (confirm('هل تريد حذف جميع البيانات؟ لا يمكن التراجع.')) {
+    state.days = {}; state.name = ''; state.startDate = null; state.duration = 75;
+    state.habits = JSON.parse(JSON.stringify(DEFAULT_HABITS));
+    save(); showToast('تم مسح البيانات'); renderToday(); renderSetup();
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// SPLASH
+function runSplash(onDone) {
+  const bar = document.getElementById('splashBar');
+  const dots = [document.getElementById('sd1'), document.getElementById('sd2'), document.getElementById('sd3')];
+  const splash = document.getElementById('splash');
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 3;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${20+Math.random()*60}%;bottom:${10+Math.random()*20}%;animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*1.5}s;opacity:0`;
+    splash.appendChild(p);
+  }
+  let pct = 0;
+  const interval = setInterval(() => {
+    pct += Math.random() * 3.5 + 1.5;
+    if (pct > 100) pct = 100;
+    bar.style.width = pct + '%';
+    if (pct >= 33) { dots[0].classList.remove('active'); dots[1].classList.add('active'); }
+    if (pct >= 66) { dots[1].classList.remove('active'); dots[2].classList.add('active'); }
+    if (pct >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        document.getElementById('splash').classList.add('hide');
+        setTimeout(onDone, 700);
+      }, 300);
+    }
+  }, 40);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  state.theme = theme;
+  save();
+  document.querySelectorAll('.theme-card').forEach(c => {
+    c.classList.toggle('active', c.dataset.theme === theme);
+  });
+}
+function applyTheme() {
+  const t = state.theme || 'gold';
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-card').forEach(c => {
+    c.classList.toggle('active', c.dataset.theme === t);
+  });
+}
+
+function init() {
+  load();
+  if (!state.startDate) { state.startDate = today(); save(); }
+  if (!state.duration) { state.duration = 75; save(); }
+  applyTheme();
+  runSplash(() => {
+    document.getElementById('navChallenge').textContent = toArabicNum(state.duration) + ' يوم';
+    document.getElementById('logoSubtitle').textContent = 'AZEM · ' + (state.duration||75) + ' DAYS';
+    renderToday();
+  });
+}
+init();
+
+// ===================== CONTENT OS LOGIC =====================
+const COS_DAYS = [
+  {
+    id:'sun', name:'Sunday', short:'Sun', emoji:'💡', color:'#c9a84c',
+    type:'Value / Education', effort:85,
+    description:'Your highest-reach post of the week. Teach something genuinely useful. This is the day the algorithm rewards with new followers.',
+    steps:[
+      {t:'Pick your topic from your Idea Bank', n:'Scroll comments, DMs, or TikTok search for questions people in your niche keep asking'},
+      {t:'Write your hook first — before anything else', n:'The first 2 seconds decide if anyone watches. Spend 20 minutes on this alone.'},
+      {t:'Film talking-head style OR create a carousel', n:'Deliver 1 key insight explained clearly. No fluff. Aim for 30–60 seconds.'},
+      {t:'Caption: start with hook, end with CTA', n:'"Save this" or "Which of these do you do?" drives saves and comments = algorithm boost'},
+      {t:'Post between 6–9pm and engage for 60 mins', n:'Reply to every comment. The first hour is the algorithm\'s test window.'},
+    ],
+    hookTemplates:[
+      {type:'Curiosity', text:'Nobody talks about the <span class="cos-hook-fill">[uncomfortable truth]</span> side of <span class="cos-hook-fill">[your niche]</span>.', why:'Creates a gap people need to close'},
+      {type:'Counter-Intuitive', text:'Stop doing <span class="cos-hook-fill">[common thing]</span>. Here\'s why it\'s actually hurting you.', why:'Challenges assumptions = high watch time'},
+    ],
+    ideaSrc:{label:'Where to find ideas', tips:['Your most-asked DM questions this week','TikTok/IG search bar autocomplete in your niche','Reddit threads where people rant about problems']}
+  },
+  {
+    id:'mon', name:'Monday', short:'Mon', emoji:'😤', color:'#e0a030',
+    type:'Raw / Relatable', effort:30,
+    description:'Low-effort, high-connection. Share a real struggle, failure, or honest moment. This is the post that makes people feel seen — and follow you.',
+    steps:[
+      {t:'Think of 1 real thing that went wrong this week', n:'A flop post, a bad day, a mistake you made. Authenticity beats polish every time.'},
+      {t:'Film it raw — one take, no editing', n:'Sitting on your bed, in your car, at your desk. The rawness IS the content.'},
+      {t:'Lead with "I FLOP ALL THE TIME" energy', n:'The hook is you being honest. "I lost 200 followers this week. Here\'s what happened."'},
+      {t:'Keep it under 45 seconds', n:'Just the struggle + what you learned (or didn\'t). No over-explaining.'},
+      {t:'Post mid-morning (10am–12pm)', n:'Monday morning scroll = high volume. Low-effort post = quick win.'},
+    ],
+    hookTemplates:[
+      {type:'Vulnerability', text:'I completely failed at <span class="cos-hook-fill">[thing]</span> this week and I\'m not going to pretend I didn\'t.', why:'Humanises you immediately — high share rate'},
+      {type:'Relatability', text:'POV: you\'ve been doing <span class="cos-hook-fill">[thing]</span> for <span class="cos-hook-fill">[time]</span> and still struggling with this…', why:'POV format instantly signals relatable content'},
+    ],
+    ideaSrc:{label:'Where to find ideas', tips:['Literally what happened to you this week','A post that flopped — talk about why','Something you thought would work but didn\'t']}
+  },
+  {
+    id:'tue', name:'Tuesday', short:'Tue', emoji:'⚡', color:'#e870c8',
+    type:'Viral / Entertainment', effort:70,
+    description:'Your big-reach play. High-energy, fast-paced, entertaining. Think trend-driven, list-based, or a bold take.',
+    steps:[
+      {t:'Find a trending audio or format on IG/TikTok', n:'Spend 15 mins on Explore. What format is getting pushed this week?'},
+      {t:'Map your niche onto the trend', n:'Don\'t copy — adapt. Take the format and fill it with your specific world.'},
+      {t:'Script it tightly — every second counts', n:'Write out what you\'ll say word for word. Then cut 30% of it.'},
+      {t:'Film with energy — even if you don\'t feel it', n:'Fake the first 5 seconds until it\'s real. Energy is contagious on camera.'},
+      {t:'Post at peak time and respond fast', n:'This post type relies on early momentum. Be ready to engage right after posting.'},
+    ],
+    hookTemplates:[
+      {type:'List / Number', text:'<span class="cos-hook-fill">[Number]</span> things every <span class="cos-hook-fill">[your niche person]</span> does that secretly holds them back.', why:'Numbers in hooks stop the scroll instantly'},
+      {type:'Bold Take', text:'Hot take: <span class="cos-hook-fill">[controversial but true thing]</span> and most people are too scared to admit it.', why:'Creates instant reaction = saves + comments'},
+    ],
+    ideaSrc:{label:'Where to find ideas', tips:['Trending audio on Reels Explore right now','Top posts in your niche from the last 7 days','Comments that say "this is so true" on big accounts']}
+  },
+  {
+    id:'wed', name:'Wednesday', short:'Wed', emoji:'🏗️', color:'#2dbe6c',
+    type:'Build in Public', effort:60,
+    description:'Show the work. The process. What you\'re actually building, learning, or doing this week. People follow journeys, not results.',
+    steps:[
+      {t:'Capture your actual work this week', n:'A screenshot, a desk setup, a work session, a decision you made. Real > staged.'},
+      {t:'Frame it as a "here\'s what I\'m working on" update', n:'"This week I\'m building X. Here\'s why, and here\'s what I\'ve figured out so far."'},
+      {t:'Include one real number if possible', n:'Hours worked, revenue this month, followers gained. Numbers make it tangible.'},
+      {t:'Film process footage or do a talking head', n:'No need to be polished. A screen recording + voiceover works perfectly.'},
+      {t:'End with a question to build community', n:'"What are you building right now?" → starts conversations → boosts reach'},
+    ],
+    hookTemplates:[
+      {type:'Progress Update', text:'Week <span class="cos-hook-fill">[#]</span> of building <span class="cos-hook-fill">[thing]</span>. Here\'s exactly where I\'m at.', why:'Series format creates loyal returning viewers'},
+      {type:'Behind the Scenes', text:'What my actual <span class="cos-hook-fill">[day/week]</span> looks like when nobody\'s watching.', why:'BTS content drives saves and curiosity'},
+    ],
+    ideaSrc:{label:'Where to find ideas', tips:['Your actual work this week — screenshot it','A decision you had to make','Something you learned that surprised you']}
+  },
+  {
+    id:'fri', name:'Friday', short:'Fri', emoji:'🎯', color:'#e05555',
+    type:'Results / Proof', effort:75,
+    description:'Show outcomes. Before/afters. Revenue screenshots. Transformations. This is the post that builds authority.',
+    steps:[
+      {t:'Pick ONE result to feature', n:'Don\'t overwhelm. One clear win: a follower milestone, a revenue screenshot, a skill improvement.'},
+      {t:'Show the before AND the after clearly', n:'The gap between before and after IS the content. Make it visual and obvious.'},
+      {t:'Tell the story of HOW briefly', n:'People don\'t just want the result — they want to believe they can get it too.'},
+      {t:'Film it with a proud but not arrogant tone', n:'"I\'m sharing this because I want you to see what\'s possible"'},
+      {t:'Add a clear next-step CTA', n:'"If you want to do this too, my free [resource] is in my bio" → drives link clicks'},
+    ],
+    hookTemplates:[
+      {type:'Proof Hook', text:'I went from <span class="cos-hook-fill">[before]</span> to <span class="cos-hook-fill">[after]</span> in <span class="cos-hook-fill">[timeframe]</span>. Here\'s exactly how.', why:'Concrete transformation = instant credibility'},
+      {type:'Income/Results', text:'Here\'s everything I made from <span class="cos-hook-fill">[thing]</span> in <span class="cos-hook-fill">[month]</span> — full breakdown.', why:'Transparency builds massive trust and shares'},
+    ],
+    ideaSrc:{label:'Where to find ideas', tips:['A metric that improved this week or month','A DM from someone you helped','A before/after of any skill or outcome']}
+  },
+  {
+    id:'sat', name:'Saturday', short:'Sat', emoji:'🎬', color:'#c9a84c',
+    type:'GRIND DAY — Batch Create', effort:100,
+    description:'This is the engine of the whole system. You film, edit, and schedule everything for the next week in one focused session.',
+    steps:[
+      {t:'7:00am — Wake up and review last week\'s analytics', n:'Which post got the most reach? Best hook? Best post time?'},
+      {t:'7:30am — Write all 5 hooks and outlines', n:'Before you touch the camera, all 5 content ideas are on paper.'},
+      {t:'9:00am — Change outfits and batch film', n:'Film all 5 posts back-to-back changing outfits between each one.'},
+      {t:'12:00pm — Lunch + rough edit', n:'Light triage on your phone while you eat. Delete bad takes. Don\'t edit yet.'},
+      {t:'1:00pm — Full edit all 5 videos', n:'CapCut or desktop. Captions, cuts, audio. Aim for 20–30 mins per video max.'},
+      {t:'4:00pm — Write all 5 captions + hashtags', n:'Hook in line 1. Value in body. CTA in last line. 3–5 niche hashtags only.'},
+      {t:'5:00pm — Schedule everything in Meta Suite', n:'Sun 7pm, Mon 10am, Tue 6pm, Wed 12pm, Fri 6pm. Done.'},
+    ],
+    hookTemplates:[],
+    ideaSrc:{label:'Grind day prep checklist', tips:['Charge all devices the night before','Prep 3 different outfits','Have all locations scouted','Write ideas on Friday night']}
+  },
+];
+
+const COS_GRIND_FLOW = [
+  {time:'7:00 – 7:30 AM', title:'Analytics Review', emoji:'📊', color:'#7c6ff7', colorBg:'rgba(124,111,247,.15)',
+   desc:'Open Instagram Insights. Screenshot your top post from last week. Write down: what hook worked, what post time performed best, what type got the most saves.',
+   tips:['Check reach vs followers ratio','Note best posting times','Flag top-performing hook style']},
+  {time:'7:30 – 9:00 AM', title:'Ideation & Scripting', emoji:'✍️', color:'#c9a84c', colorBg:'rgba(201,168,76,.12)',
+   desc:'Do NOT touch the camera yet. Write all 5 hooks on paper. Outline each video in 3 bullet points. Decide outfit and location for each.',
+   tips:['Hook written first for every post','3-bullet outline per video','Outfits and locations assigned']},
+  {time:'9:00 – 12:00 PM', title:'Batch Filming', emoji:'🎬', color:'#e0a030', colorBg:'rgba(224,160,48,.12)',
+   desc:'Change outfits between each video so they look like different days. Aim: 3+ looks, 2+ locations.',
+   tips:['3 outfit changes minimum','2 different locations','Multiple takes per hook','Leave gaps between posts when filming']},
+  {time:'12:00 – 1:00 PM', title:'Lunch Break', emoji:'🍜', color:'#2dbe6c', colorBg:'rgba(45,190,108,.1)',
+   desc:'Actual rest. Step away from the camera. You can do light triage — watch back clips and delete obvious bad takes — but no real editing yet.',
+   tips:['Step away from the screen','Triage if you want but don\'t edit','Eat something real']},
+  {time:'1:00 – 4:00 PM', title:'Edit All 5 Videos', emoji:'✂️', color:'#e870c8', colorBg:'rgba(232,112,200,.12)',
+   desc:'CapCut or Premiere. For each video: trim fat, add captions, pick audio. Aim for 20–30 mins per video max.',
+   tips:['20–30 mins per video max','Auto-captions then manual fix','Add trending audio to viral post','Batch render all at end']},
+  {time:'4:00 – 5:00 PM', title:'Write Captions & Schedule', emoji:'📅', color:'#e05555', colorBg:'rgba(224,85,85,.12)',
+   desc:'Write all 5 captions: hook in line 1, value in body, CTA as final line. 3–5 hashtags only. Then schedule everything in Meta Business Suite.',
+   tips:['Sun 7pm → Value post','Mon 10am → Raw/Relatable','Tue 6pm → Viral/Entertainment','Wed 12pm → Build in Public','Fri 6pm → Results/Proof']},
+];
+
+const COS_TASKS = {
+  sat:['Review last week\'s analytics','Write all 5 hooks + outlines','Prep 3 outfits + 2 locations','Batch film all 5 videos','Lunch break','Edit all 5 videos','Write 5 captions + hashtags','Schedule in Meta Business Suite'],
+  sun:['Post Value/Education Reel','Engage for 60 mins after posting','Reply all comments + DMs'],
+  mon:['Post Raw/Relatable clip','Engage for 30 mins','Post 1–2 Stories'],
+  tue:['Post Viral/Entertainment Reel','Engage for 60 mins','Check Explore + trending audio for next week'],
+  wed:['Post Build in Public update','Comment on 10 accounts in your niche','Review mid-week analytics'],
+  fri:['Post Results/Proof Reel','Engage for 60 mins','Start thinking about next week\'s ideas'],
+};
+
+let cosActiveDay = 0;
+let cosCurrentWeek = 0;
+let cosCheckState = {};
+let cosInitialized = false;
+
+function cosInit() {
+  if (cosInitialized) return;
+  cosInitialized = true;
+  cosRenderWeekStrip();
+  cosRenderDayDetail(0);
+  cosRenderGrindFlow();
+  cosRenderScriptTabs();
+  cosRenderTracker();
+  cosUpdateBadge();
+  setTimeout(() => {
+    document.querySelectorAll('.cos-fade-in').forEach(el => el.classList.add('visible'));
+  }, 50);
+}
+
+function cosShowScreen(id) {
+  document.querySelectorAll('.cos-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.cos-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('cos-screen-'+id).classList.add('active');
+  const map = {overview:0, grind:1, script:2, tracker:3};
+  document.querySelectorAll('.cos-tab')[map[id]].classList.add('active');
+  setTimeout(() => {
+    document.querySelectorAll('.cos-fade-in').forEach(el => el.classList.add('visible'));
+  }, 50);
+}
+
+function cosRenderWeekStrip() {
+  const el = document.getElementById('cosWeekStrip');
+  el.innerHTML = COS_DAYS.map((d,i) => `
+    <div class="cos-day-card cos-fade-in${i===cosActiveDay?' active':''}${d.id==='sat'?' grind':''}" onclick="cosRenderDayDetail(${i})" style="animation-delay:${i*50}ms">
+      ${d.id==='sat'?'<span class="cos-grind-badge">GRIND</span>':''}
+      <div class="cos-day-dot" style="background:${d.color}22;color:${d.color}">${d.emoji}</div>
+      <div class="cos-day-name">${d.name}</div>
+      <div class="cos-day-type">${d.type}</div>
+      <div class="cos-effort-bar"><div class="cos-effort-fill" style="width:${d.effort}%;background:${d.color}"></div></div>
+    </div>
+  `).join('');
+}
+
+function cosRenderDayDetail(i) {
+  cosActiveDay = i;
+  cosRenderWeekStrip();
+  const d = COS_DAYS[i];
+  const el = document.getElementById('cosDetailSection');
+  el.innerHTML = `
+    <div class="cos-detail-panel">
+      <div class="cos-detail-header">
+        <div class="cos-detail-icon" style="background:${d.color}22;font-size:24px">${d.emoji}</div>
+        <div>
+          <div class="cos-detail-title">${d.name} — ${d.type}</div>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:3px;max-width:560px;line-height:1.5">${d.description}</p>
+          <div class="cos-detail-meta">
+            <div class="cos-meta-chip">Effort <b style="color:${d.color}">${d.effort}%</b></div>
+            <div class="cos-meta-chip">Platform <b>Instagram</b></div>
+            ${d.id==='sat'?'<div class="cos-meta-chip" style="border-color:var(--gold-dim);color:var(--gold)">🔥 Grind Day</div>':''}
+          </div>
+        </div>
+      </div>
+      <div class="cos-detail-body">
+        <div class="cos-detail-col">
+          <div class="cos-col-label">Step-by-step playbook</div>
+          <ul class="cos-step-list">
+            ${d.steps.map((s,n) => `
+              <li class="cos-step-item">
+                <div class="cos-step-num">${n+1}</div>
+                <div>
+                  <div class="cos-step-text">${s.t}</div>
+                  <div class="cos-step-note">${s.n}</div>
+                </div>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+        <div class="cos-detail-col">
+          ${d.hookTemplates.length ? `
+          <div class="cos-col-label">Hook templates</div>
+          ${d.hookTemplates.map(h => `
+            <div class="cos-hook-box" style="margin-bottom:10px">
+              <div class="cos-hook-label">${h.type}</div>
+              <div class="cos-hook-template">${h.text}</div>
+              <div style="margin-top:8px;font-size:11px;color:var(--text-dim);font-style:italic">→ ${h.why}</div>
+            </div>
+          `).join('')}
+          ` : ''}
+          <div class="cos-idea-source" style="margin-top:${d.hookTemplates.length?'14':'0'}px">
+            <div class="label">${d.ideaSrc.label}</div>
+            ${d.ideaSrc.tips.map(t => `<p>→ ${t}</p>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function cosRenderGrindFlow() {
+  const el = document.getElementById('cosFlowWrap');
+  el.innerHTML = COS_GRIND_FLOW.map((f,i) => `
+    <div class="cos-flow-node cos-fade-in" style="animation-delay:${i*80}ms">
+      <div class="cos-flow-left">
+        <div class="cos-flow-circle" style="background:${f.colorBg};color:${f.color};border-color:${f.color}44">${i+1}</div>
+      </div>
+      <div class="cos-flow-body">
+        <div class="cos-flow-time" style="color:${f.color}">${f.time}</div>
+        <div class="cos-flow-title">${f.emoji} ${f.title}</div>
+        <div class="cos-flow-desc">${f.desc}</div>
+        <div class="cos-flow-tips">${f.tips.map(t => `<span class="cos-flow-tip">✓ ${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+let cosActiveScript = 0;
+function cosRenderScriptTabs() {
+  const scriptDays = COS_DAYS.filter(d => d.id !== 'sat');
+  const tabEl = document.getElementById('cosScriptTabs');
+  const panelEl = document.getElementById('cosScriptPanels');
+  tabEl.innerHTML = scriptDays.map((d,i) => `
+    <button class="cos-script-tab${i===0?' active':''}" onclick="cosSwitchScript(${i})">${d.emoji} ${d.name}</button>
+  `).join('');
+  panelEl.innerHTML = scriptDays.map((d,i) => `
+    <div class="cos-script-panel${i===0?' active':''}" id="cos-sp-${i}">
+      <div class="cos-script-section">
+        <h3>Content Formula</h3>
+        <div class="cos-formula-card">
+          <div class="cos-formula-row"><span class="cos-formula-label">Format</span><span class="cos-formula-val">${d.type}</span></div>
+          <div class="cos-formula-row"><span class="cos-formula-label">Effort</span><span class="cos-formula-val">${d.effort}% — ${'█'.repeat(Math.round(d.effort/10))}${'░'.repeat(10-Math.round(d.effort/10))}</span></div>
+          <div class="cos-formula-row"><span class="cos-formula-label">Goal</span><span class="cos-formula-val">${cosGetGoal(d.id)}</span></div>
+          <div class="cos-formula-row"><span class="cos-formula-label">Length</span><span class="cos-formula-val">${cosGetLength(d.id)}</span></div>
+          <div class="cos-formula-row"><span class="cos-formula-label">Post time</span><span class="cos-formula-val"><em>${cosGetPostTime(d.id)}</em></span></div>
+        </div>
+      </div>
+      ${d.hookTemplates.length ? `
+      <div class="cos-script-section">
+        <h3>Hook Templates</h3>
+        <div class="cos-hook-examples">
+          ${d.hookTemplates.map(h => `
+            <div class="cos-hook-ex" onclick="cosCopyHook(this)">
+              <div class="type">${h.type} hook — click to copy</div>
+              <div class="text">${h.text.replace(/<span[^>]*>/g,'[').replace(/<\/span>/g,']')}</div>
+              <div class="why">Why it works: ${h.why}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      ` : ''}
+      <div class="cos-script-section">
+        <h3>Idea Sources</h3>
+        <div class="cos-idea-grid">
+          <div class="cos-idea-card">
+            <div class="src" style="color:${d.color}">${d.ideaSrc.label}</div>
+            <ul>${d.ideaSrc.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+          </div>
+          <div class="cos-idea-card">
+            <div class="src" style="color:var(--text-dim)">Universal sources</div>
+            <ul>
+              <li>Comments asking questions on big accounts</li>
+              <li>Your own DMs from this week</li>
+              <li>Problems you personally ran into</li>
+              <li>TikTok search bar autocomplete</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function cosGetGoal(id) { const m={sun:'New followers + saves',mon:'Connection + trust',tue:'Shares + new reach',wed:'Loyal community',fri:'Authority + conversions'}; return m[id]||''; }
+function cosGetLength(id) { const m={sun:'45–90 seconds or 5–8 slide carousel',mon:'15–45 seconds, one take',tue:'20–60 seconds, high energy',wed:'30–90 seconds or screen recording',fri:'45–90 seconds with visuals'}; return m[id]||''; }
+function cosGetPostTime(id) { const m={sun:'6–9pm',mon:'9am–12pm',tue:'5–8pm',wed:'11am–1pm',fri:'5–8pm'}; return m[id]||''; }
+
+function cosSwitchScript(i) {
+  cosActiveScript = i;
+  document.querySelectorAll('.cos-script-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  document.querySelectorAll('.cos-script-panel').forEach((p,j) => p.classList.toggle('active', j===i));
+}
+function cosCopyHook(el) {
+  const text = el.querySelector('.text').innerText;
+  navigator.clipboard.writeText(text).catch(() => {});
+  const orig = el.querySelector('.type').textContent;
+  el.style.borderColor = 'var(--gold)';
+  el.querySelector('.type').textContent = '✓ Copied!';
+  setTimeout(() => { el.style.borderColor = ''; el.querySelector('.type').textContent = orig; }, 1500);
+}
+
+function cosGetWeekDates(offset) {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1) + offset * 7;
+  const mon = new Date(now.setDate(diff));
+  const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+  const fmt = d => d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  return `${fmt(mon)} – ${fmt(sun)}`;
+}
+function cosGetWeekKey(offset) { return `cos_week_${offset}`; }
+function cosGetState() {
+  const k = cosGetWeekKey(cosCurrentWeek);
+  if (!cosCheckState[k]) cosCheckState[k] = {};
+  return cosCheckState[k];
+}
+function cosToggleTask(day, taskIdx) {
+  const st = cosGetState();
+  const key = `${day}_${taskIdx}`;
+  st[key] = !st[key];
+  cosRenderTracker();
+  cosUpdateBadge();
+}
+function cosUpdateBadge() {
+  const st = cosCheckState[cosGetWeekKey(0)] || {};
+  const done = Object.values(st).filter(Boolean).length;
+  document.getElementById('cosBadge').textContent = done;
+}
+function cosChangeWeek(dir) { cosCurrentWeek += dir; cosRenderTracker(); }
+
+function cosRenderTracker() {
+  document.getElementById('cosWeekLabel').textContent = cosGetWeekDates(cosCurrentWeek);
+  const st = cosGetState();
+  const order = ['sat','sun','mon','tue','wed','fri'];
+  const dayData = {sat:COS_DAYS[5],sun:COS_DAYS[0],mon:COS_DAYS[1],tue:COS_DAYS[2],wed:COS_DAYS[3],fri:COS_DAYS[4]};
+
+  let totalTasks = 0, doneTasks = 0;
+  order.forEach(d => {
+    COS_TASKS[d].forEach((_,i) => { totalTasks++; if (st[`${d}_${i}`]) doneTasks++; });
+  });
+  const pct = totalTasks ? Math.round(doneTasks/totalTasks*100) : 0;
+  document.getElementById('cosStatsRow').innerHTML = `
+    <div class="cos-stat-card"><div class="cos-stat-val" style="color:var(--gold)">${doneTasks}</div><div class="cos-stat-label">Tasks done</div></div>
+    <div class="cos-stat-card"><div class="cos-stat-val">${totalTasks-doneTasks}</div><div class="cos-stat-label">Remaining</div></div>
+    <div class="cos-stat-card"><div class="cos-stat-val" style="color:var(--accent)">${pct}%</div><div class="cos-stat-label">Week progress</div></div>
+    <div class="cos-stat-card"><div class="cos-stat-val" style="color:var(--green)">${order.filter(d => COS_TASKS[d].every((_,i) => st[`${d}_${i}`])).length}</div><div class="cos-stat-label">Days complete</div></div>
+  `;
+
+  let html = '';
+  order.forEach(d => {
+    const dd = dayData[d];
+    const dayDone = COS_TASKS[d].filter((_,i) => st[`${d}_${i}`]).length;
+    const dayTotal = COS_TASKS[d].length;
+    html += `
+      <div class="cos-check-day-header">
+        <span class="cos-check-day-name">${dd.emoji} ${dd.name}</span>
+        <span class="cos-check-day-type" style="color:${dd.color}">${dd.type} · ${dayDone}/${dayTotal}</span>
+      </div>
+      <div class="cos-prog-bar"><div class="cos-prog-fill" style="width:${dayTotal?dayDone/dayTotal*100:0}%;background:${dd.color}"></div></div>
+    `;
+    COS_TASKS[d].forEach((task, i) => {
+      const done = !!st[`${d}_${i}`];
+      html += `
+        <div class="cos-check-row${done?' done':''}" onclick="cosToggleTask('${d}',${i})">
+          <div class="cos-check-box">${done?'✓':''}</div>
+          <div class="cos-check-text">${task}</div>
+        </div>
+      `;
+    });
+  });
+  document.getElementById('cosChecklistWrap').innerHTML = html;
+}
+</script>
+</body>
+</html>
