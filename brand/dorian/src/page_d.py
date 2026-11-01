@@ -11,12 +11,12 @@ combos=[('forest','offwhite'),('offwhite','forest'),('charcoal','spice'),('taupe
 mk={'offwhite':P['MARK_OFF'],'forest':P['MARK_FOR'],'spice':P['MARK_SPI'],'charcoal':P['MARK_CHA']}
 comboh=''.join(f'<div class="combo" style="background:{C[b]}">{mk[f]}</div>' for b,f in combos)
 pairs=[
- ('Recommended','Archivo ExtraBold','Josefin Sans','font-family:Archivo,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.14em','font-family:"Josefin Sans",sans-serif','Couture sur mesure','Archivo ExtraBold is the face of the wordmark: wide-tracked capitals that sit well next to the sharp D. Josefin Sans, light and spaced, carries everything else.'),
- ('Alternative','Forum','Outfit','font-family:Forum,serif;text-transform:uppercase;letter-spacing:.12em','font-family:Outfit,sans-serif;font-weight:300','Couture sur mesure','Forum\'s capitals look carved and ceremonial. Use them for formal and evening collections.'),
- ('Alternative','Instrument Serif Italic','Outfit','font-family:"Instrument Serif",serif;font-style:italic','font-family:Outfit,sans-serif;font-weight:300','Une pièce, un client','Softer and more personal. Good for Instagram captions and stories.'),
+ ('Recommended','Archivo ExtraBold','Josefin Sans','font-family:Archivo,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.14em','font-family:"Josefin Sans",sans-serif','Made to measure','Archivo ExtraBold is the face of the wordmark: wide-tracked capitals that sit well next to the sharp D. Josefin Sans, light and spaced, carries everything else.'),
+ ('Alternative','Forum','Outfit','font-family:Forum,serif;text-transform:uppercase;letter-spacing:.12em','font-family:Outfit,sans-serif;font-weight:300','Made to measure','Forum\'s capitals look carved and ceremonial. Use them for formal and evening collections.'),
+ ('Alternative','Instrument Serif Italic','Outfit','font-family:"Instrument Serif",serif;font-style:italic','font-family:Outfit,sans-serif;font-weight:300','One piece, one client','Softer and more personal. Good for Instagram captions and stories.'),
 ]
 pairh=''.join(f'''<article class="pair{' rec' if i==0 else ''}"><p class="eyebrow">{t}</p><p class="spec" style='{ds}'>{s}</p>
-<p class="body" style='{bs}'>Each piece is drafted to one man's measurements, cut by hand and fitted in person at the atelier in Béchar.</p>
+<p class="body" style='{bs}'>Each piece is drafted to one man's measurements, cut by hand and fitted in person at the atelier in Bechar.</p>
 <p class="names"><span>{d}</span><span>+</span><span>{b}</span></p><p class="why">{w}</p></article>''' for i,(t,d,b,ds,bs,s,w) in enumerate(pairs))
 html=f'''<title>DORIAN Brand Identity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,8 +111,8 @@ svg{{display:block;max-width:100%;height:auto}}
 <main class="wrap">
 <section class="panel hero" aria-label="DORIAN">
  {P['PRI_FOR'].replace('class="st"','class="hp"')}
- <div class="tag">COUTURE SUR MESURE</div>
- <p class="story">de mère en fils, cousu main</p>
+ <div class="tag">MENSWEAR</div>
+ <p class="story">from mother to son, sewn by hand</p>
 </section>
 
 <section class="panel constr">
@@ -181,7 +181,7 @@ svg{{display:block;max-width:100%;height:auto}}
  <h2>Three pairings from your Google Fonts list</h2>
  <p class="lead">Each pair is a strong face for headlines plus a quieter one for everything else. Pick one pair and stick to it.</p>
  <div class="pairs">{pairh}</div>
- <div class="script"><span>fait main, avec amour</span><small>Pinyon Script: a hand-written signature for tags and thank-you cards only. Never for headlines.</small></div>
+ <div class="script"><span>handmade, with love</span><small>Pinyon Script: a hand-written signature for tags and thank-you cards only. Never for headlines.</small></div>
 </section>
 
 <section class="panel">

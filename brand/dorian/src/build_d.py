@@ -14,7 +14,7 @@ def word(fill,s=1,tx=0,ty=0):
     w,_,_=_wm(fill,gapk=0.75); return f'<g transform="translate({tx:.2f},{ty:.2f}) scale({s:.4f})">{w}</g>'
 WW=_wm('#000',gapk=0.75)[1]; WH=CAP
 TS=13*1.0  # tagline size relative to wordmark cap 68.6
-TD,TW=text_path('JosefinSans%5Bwght%5D.ttf','COUTURE SUR MESURE',TS*1.55,0,0,tracking=TS*1.55*0.42,axes={'wght':400})
+TD,TW=text_path('JosefinSans%5Bwght%5D.ttf','MENSWEAR',TS*1.55,0,0,tracking=TS*1.55*0.42,axes={'wght':400})
 def tagline(fill,cx,y): return f'<path fill="{fill}" d="{TD}" transform="translate({cx-TW/2:.2f},{y:.2f})"/>'
 def bg(w,h,c,r=0): return f'<rect width="{w:.1f}" height="{h:.1f}" rx="{r}" fill="{c}"/>'
 def doc(w,h,inner,t): return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.1f} {h:.1f}"><title>{t}</title>{inner}</svg>'
@@ -59,7 +59,7 @@ def centered_primary(w,h,fill,bgc,width_frac,yoff=0,tag=False):
     i,pw,ph=L_primary(fill,None,0); s=w*width_frac/pw
     out=bg(w,h,bgc)+f'<g transform="translate({(w-pw*s)/2:.1f},{(h-ph*s)/2+yoff:.1f}) scale({s:.4f})">{i}</g>'
     if tag:
-        ts=pw*s*0.62/TW; ty=(h+ph*s)/2+yoff+pw*s*0.11
+        ts=pw*s*0.36/TW; ty=(h+ph*s)/2+yoff+pw*s*0.10
         out+=f'<g transform="translate({w/2:.1f},{ty:.1f}) scale({ts:.4f})">{tagline(fill,0,0)}</g>'
     return out
 soc('post-1080x1350-forest.svg',1080,1350,centered_primary(1080,1350,C['offwhite'],C['forest'],0.56,-40,True))
@@ -150,23 +150,23 @@ P['SKETCH']=f'''<svg viewBox="0 0 1000 560" role="img" aria-label="Pencil sketch
 lw=WW*0.5
 P['LABEL']=f'''<svg viewBox="0 0 360 150" role="img" aria-label="Woven garment label"><rect width="360" height="150" fill="{C['forest']}"/><rect x="8" y="8" width="344" height="134" fill="none" stroke="{C['offwhite']}" stroke-opacity=".35" stroke-dasharray="5 4"/>
 {word(C['offwhite'],0.5,180-lw/2,48)}
-<text x="180" y="116" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="10" letter-spacing="4" fill="{C['offwhite']}" fill-opacity=".8">COUTURE SUR MESURE · BÉCHAR</text></svg>'''
+<text x="180" y="116" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="10" letter-spacing="4" fill="{C['offwhite']}" fill-opacity=".8">MENSWEAR · BECHAR</text></svg>'''
 ts=0.5
 P['TAG']=f'''<svg viewBox="0 0 200 330" role="img" aria-label="Hang tag"><path d="M20,40 L60,8 H140 L180,40 V318 H20 Z" fill="{C['offwhite']}"/><circle cx="100" cy="38" r="9" fill="{C['charcoal']}"/>
 <path d="M100,38 C120,-10 170,10 200,-4" stroke="{C['spice']}" stroke-width="2" fill="none"/>
 {mark(C['forest'],ts,100-MW*ts/2,88)}
 <line x1="44" y1="222" x2="156" y2="222" stroke="{C['taupe']}" stroke-width="1.6" stroke-dasharray="7 5" stroke-linecap="round"/>
-<text x="100" y="250" text-anchor="middle" font-family="Fraunces, serif" font-weight="300" font-size="16" fill="{C['charcoal']}">Costume sur mesure</text>
-<text x="100" y="274" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" letter-spacing="3" fill="#6f6a60">POUR HOMME</text>
-<text x="100" y="300" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="17" fill="{C['spice']}">fait main</text></svg>'''
+<text x="100" y="250" text-anchor="middle" font-family="Fraunces, serif" font-weight="300" font-size="16" fill="{C['charcoal']}">Menswear</text>
+<text x="100" y="274" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" letter-spacing="3" fill="#6f6a60">MADE TO MEASURE</text>
+<text x="100" y="300" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="17" fill="{C['spice']}">handmade</text></svg>'''
 s=118/MW
 P['AVATAR']=f'''<svg viewBox="0 0 200 200" role="img" aria-label="Instagram avatar"><circle cx="100" cy="100" r="100" fill="{C['forest']}"/>{mark(C['offwhite'],s,100-MW*s/2+3,100-MH*s/2)}</svg>'''
 s=0.62
 P['CARD_F']=f'''<svg viewBox="0 0 350 200" role="img" aria-label="Business card front"><rect width="350" height="200" fill="{C['forest']}"/>{mark(C['offwhite'],s,175-MW*s/2,100-MH*s/2)}</svg>'''
 P['CARD_B']=f'''<svg viewBox="0 0 350 200" role="img" aria-label="Business card back"><rect width="350" height="200" fill="{C['offwhite']}"/>
 {word(C['forest'],0.36,28,34)}
-<text x="28" y="92" font-family="Josefin Sans, sans-serif" font-size="8.5" letter-spacing="3" fill="#6f6a60">COUTURE SUR MESURE</text>
+<text x="28" y="92" font-family="Josefin Sans, sans-serif" font-size="8.5" letter-spacing="3" fill="#6f6a60">MENSWEAR</text>
 <line x1="28" y1="118" x2="322" y2="118" stroke="{C['spice']}" stroke-width="1.4" stroke-dasharray="7 5" stroke-linecap="round"/>
-<g font-family="Josefin Sans, sans-serif" font-size="10" fill="{C['charcoal']}"><text x="28" y="146">Atelier DORIAN · Béchar, Algérie</text><text x="28" y="164">Sur rendez-vous</text><text x="28" y="182">@dorian.couture</text></g></svg>'''
+<g font-family="Josefin Sans, sans-serif" font-size="10" fill="{C['charcoal']}"><text x="28" y="146">DORIAN Atelier · Bechar, Algeria</text><text x="28" y="164">By appointment</text><text x="28" y="182">@dorian.menswear</text></g></svg>'''
 json.dump(P,open('parts.json','w'))
 print('ok', len(os.listdir(SV)), len(os.listdir(SO)))
