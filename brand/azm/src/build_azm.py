@@ -75,7 +75,7 @@ def inl(t,label,cls=''):
     i,w,h=t; return f'<svg class="{cls}" viewBox="0 0 {w:.1f} {h:.1f}" role="img" aria-label="{label}">{i}</svg>'
 P={}
 P['VARS']=[]
-for k,lbl in (('1','Rising curve'),('2','Geometric'),('3','Light')):
+for k,lbl in (('1','Broad nib'),('2','Cut rings'),('3','Rings + pen contrast')):
     m,w=mark(C['blue'],200,0,0,k); P['VARS'].append((k,lbl,f'<svg viewBox="-20 -20 {w+40:.1f} 240" role="img" aria-label="Variation {k}">{m}</svg>',
         f'<svg viewBox="-20 -20 {w+40:.1f} 240" style="height:16px" aria-hidden="true">{mark(C["blue"],200,0,0,k)[0]}</svg>'))
 for nm,f,b in VERS:

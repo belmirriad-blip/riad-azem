@@ -40,7 +40,7 @@ No purple. No gradients.
 - **Scale (rem):** 0.75 caption · 0.875 small · 1 body · 1.125 lead · 1.375 h3 · 1.75 h2 · 2.25 h1 · 3.5 display (countdown only).
 
 ## Logo
-- **Mark:** the letter ع as one even, round-ended stroke. The lower curve drops, turns and climbs back up past where it started: steady progress, one step at a time. Variation 1 (rising curve) is in use; variations 2 (geometric) and 3 (light) are in `svg/`.
+- **Mark:** the letter ع written with a flat calligraphy pen: thick and thin strokes, sharp cut ends. The lower curve drops, turns and climbs to the right past where it started: steady progress. Two geometric alternatives (cut rings, and rings with pen contrast) are kept in `svg/` as variations 2 and 3.
 - **Lockups:** mark + عزم (RTL, mark on the right); mark + “Azm” for French or English; mark alone.
 - **Colour versions:** blue on white, white on blue, white on ink, single-colour ink.
 - **Clear space:** the height of the ع's lower curve on every side. **Minimum:** 20 px for the mark, 80 px wide for a lockup.

@@ -29,3 +29,7 @@ def v_light():
     global W
     w0=W; W=10.5; g=v1(); W=w0; return g
 MARKS={'1':v1(),'2':v3(),'3':v_light()}
+
+# Final choice: C (broad nib). A and A+C kept as alternatives.
+from m3 import C2, A2, AC
+MARKS={'1':C2(),'2':A2(),'3':AC()}

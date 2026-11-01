@@ -15,7 +15,7 @@ for a,b in pairs:
     r=cr(C[a],C[b]); ok='Pass' if r>=4.5 else ('Large text only' if r>=3 else 'Fail')
     note={'Amber/Paper':'Amber is a fill on light, never text','Slate/Paper':'Slate is for borders on light, never text','Blue/Ink':'On dark, the mark and links go white'}.get(f'{a}/{b}','')
     rows+=f'<tr><td><span class="pv" style="background:{C[b]};color:{C[a]}">عزم Aa</span></td><td>{a} on {b}</td><td class="num">{r:.2f}:1</td><td><span class="st {ok.split()[0].lower()}">{ok}</span></td><td class="muted">{note}</td></tr>'
-vars_=''.join(f'<figure class="var{" pick" if k=="1" else ""}"><div class="vart">{big}</div><figcaption><b>{k} · {lbl}</b>{" · in use" if k=="1" else ""}<span class="tiny">{small}<em>16 px</em></span></figcaption></figure>' for k,lbl,big,small in P['VARS'])
+vars_=''.join(f'<figure class="var{" pick" if k=="1" else ""}"><div class="vart">{big}</div><figcaption><b>{k} · {lbl}</b>{" · the mark" if k=="1" else ""}<span class="tiny">{small}<em>16 px</em></span></figcaption></figure>' for k,lbl,big,small in P['VARS'])
 socials=[('post-1080x1350-ink','Post · 1080×1350'),('post-1080x1350-white','Post · 1080×1350'),('story-1080x1920-number','Story · 1080×1920'),('reel-cover-1080x1920','Reel cover · 1080×1920'),('testimonial-1080x1350','Testimonial · 1080×1350')]
 soch=''.join(f'<figure class="so"><img src="social/{n}.png" alt="{l}"><figcaption>{l}</figcaption></figure>' for n,l in socials)
 fav=P['FAV']
@@ -111,10 +111,10 @@ th,td{{text-align:start;padding:10px 12px;border-bottom:1px solid var(--line);ve
  <h2>An ع whose curve keeps climbing</h2>
  <div class="idea">
   <div class="mkbox">{P['MARK']}</div>
-  <p class="lead" style="margin:0">The mark is the first letter of عزم, drawn as one even stroke with rounded ends. The lower curve doesn't close. It drops, turns, and climbs back up past where it started, like steady progress. One step at a time, not a rocket. It's a single colour with no fine detail, so it still reads at 16 pixels.</p>
+  <p class="lead" style="margin:0">The mark is the first letter of عزم, written with a flat calligraphy pen: thick where the pen pulls down, thin where it turns, with sharp, cut ends. The lower curve doesn't close. It drops, turns, and climbs to the right, past the height where it started, like steady progress. It's a single colour with no fine detail, so it still reads at 16 pixels.</p>
  </div>
- <h3 style="margin-top:40px">Three variations</h3>
- <p class="lead">Pick one and everything gets rebuilt from it. Variation 1 is in use until you choose.</p>
+ <h3 style="margin-top:40px">The mark and the alternatives</h3>
+ <p class="lead">The broad-nib ع is the mark. The two geometric versions stay on file in <code>svg/</code>, but everything is built from the first.</p>
  <div class="vars">{vars_}</div>
 </section>
 
