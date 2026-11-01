@@ -12,11 +12,11 @@ mk={'offwhite':P['MARK_OFF'],'forest':P['MARK_FOR'],'spice':P['MARK_SPI'],'charc
 comboh=''.join(f'<div class="combo" style="background:{C[b]}">{mk[f]}</div>' for b,f in combos)
 pairs=[
  ('Recommended','Archivo ExtraBold','Josefin Sans','font-family:Archivo,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.14em','font-family:"Josefin Sans",sans-serif','Couture sur mesure','Archivo ExtraBold is the face of the wordmark: wide-tracked capitals that sit well next to the sharp D. Josefin Sans, light and spaced, carries everything else.'),
- ('Alternative','Forum','Outfit','font-family:Forum,serif;text-transform:uppercase;letter-spacing:.12em','font-family:Outfit,sans-serif;font-weight:300','Couture sur mesure','Forum\'s capitals look carved and ceremonial. Use them for wedding and evening collections.'),
- ('Alternative','Instrument Serif Italic','Outfit','font-family:"Instrument Serif",serif;font-style:italic','font-family:Outfit,sans-serif;font-weight:300','Une robe, une cliente','Softer and more personal. Good for Instagram captions and stories.'),
+ ('Alternative','Forum','Outfit','font-family:Forum,serif;text-transform:uppercase;letter-spacing:.12em','font-family:Outfit,sans-serif;font-weight:300','Couture sur mesure','Forum\'s capitals look carved and ceremonial. Use them for formal and evening collections.'),
+ ('Alternative','Instrument Serif Italic','Outfit','font-family:"Instrument Serif",serif;font-style:italic','font-family:Outfit,sans-serif;font-weight:300','Une pièce, un client','Softer and more personal. Good for Instagram captions and stories.'),
 ]
 pairh=''.join(f'''<article class="pair{' rec' if i==0 else ''}"><p class="eyebrow">{t}</p><p class="spec" style='{ds}'>{s}</p>
-<p class="body" style='{bs}'>Each dress is drafted to one woman's measurements, cut by hand and fitted in person at the atelier in Béchar.</p>
+<p class="body" style='{bs}'>Each piece is drafted to one man's measurements, cut by hand and fitted in person at the atelier in Béchar.</p>
 <p class="names"><span>{d}</span><span>+</span><span>{b}</span></p><p class="why">{w}</p></article>''' for i,(t,d,b,ds,bs,s,w) in enumerate(pairs))
 html=f'''<title>DORIAN Brand Identity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -156,8 +156,8 @@ P['TAG']=f'''<svg viewBox="0 0 200 330" role="img" aria-label="Hang tag"><path d
 <path d="M100,38 C120,-10 170,10 200,-4" stroke="{C['spice']}" stroke-width="2" fill="none"/>
 {mark(C['forest'],ts,100-MW*ts/2,88)}
 <line x1="44" y1="222" x2="156" y2="222" stroke="{C['taupe']}" stroke-width="1.6" stroke-dasharray="7 5" stroke-linecap="round"/>
-<text x="100" y="250" text-anchor="middle" font-family="Fraunces, serif" font-weight="300" font-size="17" fill="{C['charcoal']}">Robe sur mesure</text>
-<text x="100" y="274" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" letter-spacing="3" fill="#6f6a60">TAILLE · UNIQUE</text>
+<text x="100" y="250" text-anchor="middle" font-family="Fraunces, serif" font-weight="300" font-size="16" fill="{C['charcoal']}">Costume sur mesure</text>
+<text x="100" y="274" text-anchor="middle" font-family="Josefin Sans, sans-serif" font-size="9" letter-spacing="3" fill="#6f6a60">POUR HOMME</text>
 <text x="100" y="300" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="17" fill="{C['spice']}">fait main</text></svg>'''
 s=118/MW
 P['AVATAR']=f'''<svg viewBox="0 0 200 200" role="img" aria-label="Instagram avatar"><circle cx="100" cy="100" r="100" fill="{C['forest']}"/>{mark(C['offwhite'],s,100-MW*s/2+3,100-MH*s/2)}</svg>'''
