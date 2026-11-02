@@ -1,6 +1,7 @@
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from marks import *
+from pen import *
+from shapely.geometry import Point
 from shapely.geometry import Polygon, LineString
 from shapely import affinity
 from fontTools.ttLib import TTFont
@@ -15,43 +16,29 @@ os.makedirs(OUT_SVG, exist_ok=True)
 
 BONE, NIGHT, DUNE, SAND, ASH, EMBER = '#F1EBE0', '#15120F', '#4A3326', '#D6C3A1', '#8A8580', '#C4502A'
 
-# ---------------------------------------------------------------- mark
-raw = clean(final(), s=0.08)
-minx, miny, maxx, maxy = raw.bounds
-SC = 100 / (maxy - miny)
-def same_norm(g):
-    g = affinity.translate(g, -minx, -miny)
-    return affinity.scale(g, SC, SC, origin=(0, 0))
-MARK = same_norm(raw)
-MW = MARK.bounds[2]                       # ~72.4 wide, 100 tall
-COUNTER = Polygon(MARK.interiors[0])
-X = COUNTER.bounds[3] - COUNTER.bounds[1] # clear-space unit = counter height
+# ---------------------------------------------------------------- mark: two barchan dunes
+from o2 import C, DISC, lens, ring, rot, split, lensO, crescent, egg, ovalO, dunesO, dunes_counter
+from shapely.geometry import box as _box
+MA, MHW, MEW, ME = -25, 16, 3, 6          # tilt, counter half-width, half-opening at edge, stagger
+_m, MR, MD = dunesO(MA, MHW, MEW, ME)
+MARK = _m.simplify(0.08)
+MG = 2*MEW
+MW = 100.0
+COUNTER = dunes_counter(MA, MHW, MEW, ME)
+X = 2 * MHW                                # clear-space unit = widest part of the counter
 MARK_D = to_path(MARK)
-# accent hairline: the counter's own contour, inset
-hair = COUNTER.buffer(-5.5, join_style=2, mitre_limit=5).simplify(0.1).exterior
+hair = COUNTER.buffer(-5, join_style=2, mitre_limit=5).simplify(0.05).exterior
 HAIR_D = 'M' + ' L'.join(f'{x:.2f},{y:.2f}' for x, y in list(hair.coords)[:-1]) + 'Z'
-
 def mark(fill, tx=0, ty=0, s=1, accent=False):
     g = f'<path fill="{fill}" d="{MARK_D}"/>'
     if accent:
-        g += f'<path fill="none" stroke="{EMBER}" stroke-width="1.1" stroke-linejoin="miter" d="{HAIR_D}"/>'
+        g += f'<path fill="none" stroke="{EMBER}" stroke-width="1.1" stroke-linejoin="round" d="{HAIR_D}"/>'
     return f'<g transform="translate({tx:.2f},{ty:.2f}) scale({s:.4f})">{g}</g>'
-
-# construction strokes (same transform as the mark)
-def strokes_parts():
-    import marks as M
-    W, A = M.W, M.A
-    L = bez((48,5),(22,10),(12,30),(13,50),30)[:-1] + bez((13,50),(14,72),(24,90),(47,95),30)
-    R = [(45,6),(62,13),(71,26),(71,70),(64,84),(44,95)]
-    Rd = [p for a,b in zip(R,R[1:]) for p in [(a[0]+(b[0]-a[0])*t/8, a[1]+(b[1]-a[1])*t/8) for t in range(8)]]+[R[-1]]
-    ls = same_norm(stroke(L, W, A).simplify(0.08)); rs = same_norm(stroke(Rd, W, A).simplify(0.08))
-    tf = lambda pts: [((x-minx)*SC, (y-miny)*SC) for x, y in pts]
-    return ls, rs, tf(L), tf(R)
-LS, RS, LSK, RSK = strokes_parts()
+PIECES = sorted(list(MARK.geoms), key=lambda p: p.centroid.x)
 def poly_d(pts): return 'M' + ' L'.join(f'{x:.2f},{y:.2f}' for x, y in pts)
 
 # ---------------------------------------------------------------- wordmark (Archivo 800, outlined)
-font = TTFont(os.path.join(HERE, '../fonts/archivo800.ttf'))
+font = TTFont(os.environ.get('ARCHIVO_TTF', os.path.join(HERE, '../fonts/archivo800.ttf')))
 gs = font.getGlyphSet(); cmap = font.getBestCmap()
 UPM = font['head'].unitsPerEm; CAP = font['OS/2'].sCapHeight
 def wordmark_path(text='OSTRO', track=0.35):
@@ -159,37 +146,33 @@ def hoodie(body, panel, logo, uid, notes=False, rib_line=ASH):
 
 # ---------------------------------------------------------------- pencil sketches
 SKETCH = [
-    (textura,  'Textura',          'Reads as a typeface. Anyone could own it.'),
-    (roundO,   'Round fraktur',    'Too soft. The pen disappears.'),
-    (openO,    'Open head',        'Reads as a U at 32 px.'),
-    (spur,     'Inner spur',       'A mark inside the counter. Ornament.'),
-    (lozenge,  'Lozenge',          'A diamond, not an O.'),
-    (wide,     'Wide dune',        'Turns into a zero on the chest.'),
-    (heavy,    'Heavy nib',        'The counter fills in at 20 px.'),
-    (final,    'Windward + slip face', 'Kept. Curved on one side, cut flat on the other.'),
+    (lensO(-22, 60, 47),          'Lens',            'Clean, but it looks like a hundred fashion logos.'),
+    (crescent(),                  'Crescent counter','Reads as a moon, not an O.'),
+    (egg(),                       'Off-centre counter','Reads as a button or an eye.'),
+    (ovalO(),                     'Oval counter',    'Turns into a zero next to numbers.'),
+    (split(-25, 64, 50, 5.5),      'Notched split',  'Steps where the gap meets the counter. Looks broken.'),
+    (split(0, 60, 47, 4.5),       'Upright split',   'Upright, it reads as a coffee bean.'),
+    (dunesO(-25, 11, 2.4, 6)[0],    'Thin dunes',      'The counter closes up at 20 px.'),
+    (MARK,                        'Two dunes',       'Kept. Two crescents, the wind between them.'),
 ]
-def sketch_svg(i, fn, kept):
-    g = norm(close(fn()) if fn is not openO else fn())
-    if fn is final: g = MARK
-    w = g.bounds[2]; s = 1.0
-    if w > 80: s = 80 / w
-    g = affinity.scale(g, s, s, origin=(0, 0))
+def sketch_svg(i, g, kept):
+    s = 0.8
+    g = affinity.scale(g.simplify(0.1), s, s, origin=(0, 0))
     w = g.bounds[2]; h = g.bounds[3]
     ox, oy = (120 - w)/2, (130 - h)/2
     d = to_path(g)
     flt = f'pencil{i}'
     out = [f'<defs><filter id="{flt}" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="{i+3}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter></defs>']
     out.append(f'<rect width="120" height="130" fill="{BONE}"/>')
-    out.append(f'<g stroke="{ASH}" stroke-width=".4" stroke-dasharray="2 3" fill="none"><line x1="6" y1="{oy:.1f}" x2="114" y2="{oy:.1f}"/><line x1="6" y1="{oy+h:.1f}" x2="114" y2="{oy+h:.1f}"/></g>')
+    out.append(f'<circle cx="{ox+40}" cy="{oy+40}" r="46" fill="none" stroke="{ASH}" stroke-width=".4" stroke-dasharray="2 3"/>')
     passes = [(0.3, 0.6, 0.9, 1.0, 0.3), (-0.8, 0.4, 0.45, 0.55, -0.5), (0.9, -0.5, 0.35, 0.5, 0.6)]
     out.append(f'<g filter="url(#{flt})" transform="translate({ox:.2f},{oy:.2f})">')
-    if kept:
-        out.append(f'<path d="{d}" fill="{NIGHT}" fill-opacity=".1"/>')
-    for dx, dy, op, sw, rot in passes:
-        out.append(f'<path d="{d}" fill="none" stroke="{NIGHT}" stroke-opacity="{op}" stroke-width="{sw}" transform="translate({dx},{dy}) rotate({rot} {w/2:.1f} {h/2:.1f})"/>')
+    out.append(f'<path d="{d}" fill="{NIGHT}" fill-opacity="{".16" if kept else ".07"}"/>')
+    for dx, dy, op, sw, rot_ in passes:
+        out.append(f'<path d="{d}" fill="none" stroke="{NIGHT}" stroke-opacity="{op}" stroke-width="{sw}" transform="translate({dx},{dy}) rotate({rot_} {w/2:.1f} {h/2:.1f})"/>')
     out.append('</g>')
     if kept:
-        out.append(f'<ellipse cx="60" cy="65" rx="52" ry="60" fill="none" stroke="{EMBER}" stroke-width="1.4" filter="url(#{flt})" transform="rotate(-6 60 65)"/>')
+        out.append(f'<ellipse cx="60" cy="65" rx="55" ry="58" fill="none" stroke="{EMBER}" stroke-width="1.4" filter="url(#{flt})" transform="rotate(-6 60 65)"/>')
     else:
         out.append(f'<path d="M14,118 L106,14" stroke="{NIGHT}" stroke-opacity=".55" stroke-width="1.1" filter="url(#{flt})"/>')
     return f'<svg viewBox="0 0 120 130" role="img" aria-label="Pencil sketch: {SKETCH[i][1]}">' + ''.join(out) + '</svg>'
@@ -230,58 +213,65 @@ A(f'''<section class="panel story">
 </section>''')
 
 # ---------- mark: idea
-ls_d, rs_d = to_path(LS), to_path(RS)
-def part(d, fill, sk, label):
-    pad = 14
-    inner = (f'<g transform="translate({pad},{pad})"><path fill="{fill}" d="{d}"/>'
-             f'<path d="{poly_d(sk)}" fill="none" stroke="{BONE}" stroke-width=".7" stroke-dasharray="2 2" stroke-opacity=".8"/></g>')
-    return f'<figure>{svg(inner, MW + 2*pad, 100 + 2*pad, label)}<figcaption>{label}</figcaption></figure>'
-fin = f'<figure>{svg(mark(BONE, 14, 14), MW + 28, 128, "OSTRO mark")}<figcaption>The OSTRO mark</figcaption></figure>'
+def part(g, label):
+    pad = 8
+    inner = (f'<g transform="translate({pad},{pad})"><circle cx="50" cy="50" r="50" fill="none" stroke="{ASH}" stroke-width=".6" stroke-dasharray="2 2"/>'
+             f'<path fill="{ASH}" d="{to_path(g.simplify(0.08))}"/></g>')
+    return f'<figure>{svg(inner, 100 + 2*pad, 100 + 2*pad, label)}<figcaption>{label}</figcaption></figure>'
+fin = f'<figure>{svg(mark(BONE, 8, 8), 116, 116, "OSTRO mark")}<figcaption>The OSTRO mark</figcaption></figure>'
 A(f'''<section class="panel dark">
  <p class="eyebrow">Mark · The idea</p>
- <h2>Two pen strokes, shaped like a dune.</h2>
- <p class="lead">A dune has two sides: the windward side, long and curved, and the slip face, short and steep. The O is drawn the same way with a flat pen held at 38°. The left stroke is one continuous curve. The right stroke is cut into flat facets, the way blackletter is. Nothing runs through the counter and nothing sticks out.</p>
+ <h2>Two dunes with the wind between them.</h2>
+ <p class="lead">In the Sahara, a wind that always blows from one direction builds crescent-shaped dunes called barchans. The OSTRO mark is two of them, turned to face each other inside a heavy circle. The space between them is the path of the wind: thin where it enters and leaves the circle, open in the middle, where it becomes the counter of the O. Solid, calm, and readable as a letter at any size.</p>
  <div class="eq">
-  {part(ls_d, ASH, LSK, 'Windward stroke')}<span class="op">+</span>
-  {part(rs_d, ASH, RSK, 'Slip-face stroke')}<span class="op">=</span>
+  {part(PIECES[0], 'First dune')}<span class="op">+</span>
+  {part(PIECES[1], 'Second dune')}<span class="op">=</span>
   {fin}
  </div>
 </section>''')
 
 # ---------- mark: sketches
-cells = ''.join(f'<figure class="sk{" kept" if fn is final else ""}">{sketch_svg(i, fn, fn is final)}<figcaption><b>{String}</b>{note}</figcaption></figure>'
-                for i, (fn, String, note) in enumerate(SKETCH))
+cells = ''.join(f'<figure class="sk{" kept" if g is MARK else ""}">{sketch_svg(i, g, g is MARK)}<figcaption><b>{nm}</b>{note}</figcaption></figure>'
+                for i, (g, nm, note) in enumerate(SKETCH))
 A(f'''<section class="panel paper">
  <p class="eyebrow">Mark · Sketches</p>
- <h2>Eight Os on the way to the dune</h2>
- <p class="lead">Every version was drawn with the same pen and the same angle, then tested at 32 and 20 pixels. A plain textura O looked like any gothic font. The round one lost the pen. The open head, the lozenge and the inner spur stopped reading as an O. The curved-and-cut version kept its counter open at small sizes and looks like nothing else.</p>
+ <h2>Eight Os on the way to the dunes</h2>
+ <p class="lead">Every version starts from the same heavy circle and only changes the counter. They were all tested at 32 and 20 pixels. The plain lens was clean but common. The crescent, the off-centre hole and the oval stopped reading as an O. The first split version had steps where the gap met the counter. Drawing the gap and the counter as one pair of curves fixed it, and kept a clear O.</p>
  <div class="sketches">{cells}</div>
 </section>''')
 
 # ---------- mark: geometry
 gl = []
-for x in range(-20, 101, 10): gl.append(f'<line x1="{x}" y1="-24" x2="{x}" y2="124"/>')
-for y in range(-20, 121, 10): gl.append(f'<line x1="-24" y1="{y}" x2="96" y2="{y}"/>')
+for x in range(-20, 121, 10): gl.append(f'<line x1="{x}" y1="-24" x2="{x}" y2="124"/>')
+for y in range(-20, 121, 10): gl.append(f'<line x1="-24" y1="{y}" x2="124" y2="{y}"/>')
 cy0, cy1 = COUNTER.bounds[1], COUNTER.bounds[3]
-nib = 19 * SC
-na = math.radians(38)
-nx, ny = 84, -12
-geo = (f'<g stroke="{ASH}" stroke-opacity=".35" stroke-width=".3">{"".join(gl)}</g>'
+c1 = rot(Point(50 + MD, 50 + ME), MA); c2 = rot(Point(50 - MD, 50 - ME), MA)
+def _xmeasure():
+    a = math.radians(MA)
+    def R_(x, y):
+        dx, dy = x - 50, y - 50
+        return 50 + dx*math.cos(a) - dy*math.sin(a), 50 + dx*math.sin(a) + dy*math.cos(a)
+    (x1, y1), (x2, y2) = R_(50 - MHW, 50), R_(50 + MHW, 50)
+    tx, ty = R_(50, 43)
+    return (f'<line x1="{x1:.2f}" y1="{y1:.2f}" x2="{x2:.2f}" y2="{y2:.2f}" stroke="{EMBER}" stroke-width=".9"/>'
+            f'<circle cx="{x1:.2f}" cy="{y1:.2f}" r="1" fill="{EMBER}"/><circle cx="{x2:.2f}" cy="{y2:.2f}" r="1" fill="{EMBER}"/>'
+            f'<text x="{tx:.2f}" y="{ty:.2f}" font-family="IBM Plex Mono,monospace" font-size="5" fill="{EMBER}" text-anchor="middle">x</text>')
+geo = (f'<defs><clipPath id="gclip"><rect x="-24" y="-24" width="148" height="148"/></clipPath></defs>'
+       f'<g stroke="{ASH}" stroke-opacity=".35" stroke-width=".3">{"".join(gl)}</g>'
        f'<path fill="{BONE}" fill-opacity=".94" d="{MARK_D}"/>'
-       f'<g stroke="{ASH}" stroke-width=".5" fill="none"><line x1="-24" y1="0" x2="96" y2="0"/><line x1="-24" y1="100" x2="96" y2="100"/>'
-       f'<line x1="-24" y1="{cy0:.2f}" x2="96" y2="{cy0:.2f}" stroke-dasharray="1.5 1.5"/><line x1="-24" y1="{cy1:.2f}" x2="96" y2="{cy1:.2f}" stroke-dasharray="1.5 1.5"/></g>'
-       f'<g stroke="{EMBER}" stroke-width=".7"><line x1="-12" y1="{cy0:.2f}" x2="-12" y2="{cy1:.2f}"/><line x1="-15" y1="{cy0:.2f}" x2="-9" y2="{cy0:.2f}"/><line x1="-15" y1="{cy1:.2f}" x2="-9" y2="{cy1:.2f}"/></g>'
-       f'<text x="-17" y="{(cy0+cy1)/2+2:.1f}" font-family="IBM Plex Mono,monospace" font-size="5" fill="{EMBER}" text-anchor="end">x</text>'
-       f'<line x1="{nx - nib/2*math.cos(na):.2f}" y1="{ny + nib/2*math.sin(na):.2f}" x2="{nx + nib/2*math.cos(na):.2f}" y2="{ny - nib/2*math.sin(na):.2f}" stroke="{BONE}" stroke-width="2.2"/>'
+       f'<g clip-path="url(#gclip)" fill="none" stroke="{ASH}" stroke-width=".5" stroke-dasharray="1.5 1.5"><circle cx="{c1.x:.2f}" cy="{c1.y:.2f}" r="{MR}"/><circle cx="{c2.x:.2f}" cy="{c2.y:.2f}" r="{MR}"/></g>'
+       f'<circle cx="50" cy="50" r="1.2" fill="{ASH}"/>'
+       f'<g stroke="{ASH}" stroke-width=".5" fill="none"><line x1="-24" y1="0" x2="124" y2="0"/><line x1="-24" y1="100" x2="124" y2="100"/>'
+       '</g>'
+       + _xmeasure() +
        f'<g font-family="IBM Plex Mono,monospace" font-size="3.6" letter-spacing=".5" fill="{BONE}" fill-opacity=".8">'
-       f'<text x="-22" y="-2">CAP</text><text x="-22" y="105">BASELINE</text><text x="74" y="-1">NIB 38°</text>'
-       f'<text x="-22" y="{cy0-1.5:.1f}">COUNTER</text></g>')
+       f'<text x="-22" y="-2">TOP</text><text x="-22" y="105">BASELINE</text></g>')
 A(f'''<section class="panel dark geo">
  <div class="geotext"><p class="eyebrow">Mark · Geometry</p>
- <h2>One pen, one angle, one unit</h2>
- <p class="lead">The pen is {nib:.0f} units wide on a 100-unit cap height, held at 38°. That angle makes the strokes thin where they meet at the head and the foot and heavy down the sides. The height of the counter is the unit <b>x</b>: it sets the clear space around every lockup.</p>
- <ul class="specs"><li><span>Cap height</span>100</li><li><span>Width</span>{MW:.0f}</li><li><span>Pen</span>{nib:.0f} at 38°</li><li><span>Counter x</span>{X:.0f}</li></ul></div>
- {svg(geo, 0, 0, 'Mark construction grid').replace('viewBox="0 0 0.0 0.0"', 'viewBox="-26 -26 124 152"')}
+ <h2>One circle, two curves</h2>
+ <p class="lead">The mark is a circle 100 units across. Two much larger circles, radius {MR:.0f}, overlap through its middle. Where they overlap, the circle is cut away: {2*MHW} units wide at the centre, narrowing to {MG:g} units where it leaves the edge. The two big circles are staggered by {ME} units, so the cut leans like a gust, and the whole cut is turned {abs(MA)}° to the left. The widest part of the counter is the unit <b>x</b>: it sets the clear space around every lockup.</p>
+ <ul class="specs"><li><span>Circle</span>100</li><li><span>Cutting circles</span>R {MR:.0f}</li><li><span>Opening · tilt</span>{MG:g} · {abs(MA)}°</li><li><span>Counter x</span>{X:.0f}</li></ul></div>
+ {svg(geo, 0, 0, 'Mark construction grid').replace('viewBox="0 0 0.0 0.0"', 'viewBox="-26 -26 152 152"')}
 </section>''')
 
 # ---------- mark: versions + sizes
@@ -317,7 +307,7 @@ def chest_tile(body, panel):
 A(f'''<section class="panel">
  <p class="eyebrow">Lockups</p>
  <h2>The mark leads, the name follows</h2>
- <p class="lead">The wordmark is OSTRO in Archivo ExtraBold, always in capitals, tracked at 0.35em. In the primary lockup the mark sits centred above it. The dashed line is the clear space: one counter height, <b>x</b>, on every side. Nothing else goes inside it.</p>
+ <p class="lead">The wordmark is OSTRO in Archivo ExtraBold, always in capitals, tracked at 0.35em. In the primary lockup the mark sits centred above it. The dashed line is the clear space: the width of the counter at its widest, <b>x</b>, on every side. Nothing else goes inside it.</p>
  <div class="suite">
   {lock_tile(p1[0], p1[1], p1[2], 'Primary lockup on Bone', 't-bone', 'Primary · on Bone')}
   {lock_tile(p2[0], p2[1], p2[2], 'Primary lockup on Night', 't-night', 'Primary · on Night')}
@@ -408,11 +398,11 @@ tag = (f'<rect x="0" y="0" width="200" height="340" fill="{ASH}" fill-opacity="0
 lab = [f'<rect width="300" height="120" fill="{NIGHT}"/>']
 for y in range(3, 120, 3): lab.append(f'<line x1="0" y1="{y}" x2="300" y2="{y}" stroke="{BONE}" stroke-opacity=".05" stroke-width="1"/>')
 lab.append(f'<path d="M0,0 h300 M0,120 h300" stroke="{ASH}" stroke-width="3" stroke-opacity=".6"/>')
-lab.append(mark(BONE, 40, 30, 0.6))
-wmt, wmw = wordmark(BONE, 98, 50, 18)
+lab.append(mark(BONE, 30, 33, 0.54))
+wmt, wmw = wordmark(BONE, 108, 51, 16)
 lab.append(wmt)
-lab.append(f'<line x1="{98+wmw+20:.1f}" y1="40" x2="{98+wmw+20:.1f}" y2="80" stroke="{BONE}" stroke-opacity=".4"/>')
-lab.append(f'<text x="{98+wmw+44:.1f}" y="68" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="500" font-size="20" fill="{BONE}">M</text>')
+lab.append(f'<line x1="{108+wmw+16:.1f}" y1="40" x2="{108+wmw+16:.1f}" y2="80" stroke="{BONE}" stroke-opacity=".4"/>')
+lab.append(f'<text x="{108+wmw+34:.1f}" y="68" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="500" font-size="20" fill="{BONE}">M</text>')
 label_svg = ''.join(lab)
 # instagram profile
 ig = [f'<rect width="320" height="440" rx="18" fill="{BONE}"/>',
@@ -482,7 +472,7 @@ def dont(inner, cap, bg=BONE):
     x = f'<g stroke="{NIGHT}" stroke-width="3" stroke-linecap="round"><line x1="14" y1="14" x2="186" y2="146"/><line x1="186" y1="14" x2="14" y2="146"/></g>'
     return f'<figure class="dont"><svg viewBox="0 0 200 160" role="img" aria-label="{cap}"><rect width="200" height="160" fill="{bg}"/>{inner}{x}</svg><figcaption>{cap}</figcaption></figure>'
 stretched = f'<g transform="translate(40,30) scale(1.7,1)">{mark(NIGHT, 0, 0, 1.0)}</g>'.replace('scale(1.7,1)', 'scale(1.65,1)')
-stretched = f'<g transform="translate(40,32) scale(1.65,0.96)"><path fill="{NIGHT}" d="{MARK_D}"/></g>'
+stretched = f'<g transform="translate(17,30) scale(1.66,1)"><path fill="{NIGHT}" d="{MARK_D}"/></g>'
 ember_all = (f'<rect width="200" height="160" fill="{EMBER}"/>' + mark(BONE, 100 - MW*0.8/2, 16, 0.8)
              + f'<rect x="20" y="104" width="160" height="40" fill="{BONE}"/><text x="100" y="129" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11" fill="{EMBER}">Sewn by hand in Béchar.</text>')
 busy = [f'<defs><pattern id="busy" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><rect width="24" height="24" fill="{SAND}"/><rect width="12" height="24" fill="{DUNE}"/><circle cx="18" cy="6" r="5" fill="{ASH}"/><rect y="16" width="24" height="4" fill="{EMBER}" fill-opacity=".7"/></pattern></defs>',
