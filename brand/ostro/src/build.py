@@ -41,22 +41,25 @@ def poly_d(pts): return 'M' + ' L'.join(f'{x:.2f},{y:.2f}' for x, y in pts)
 font = TTFont(os.environ.get('ARCHIVO_TTF', os.path.join(HERE, '../fonts/archivo800.ttf')))
 gs = font.getGlyphSet(); cmap = font.getBestCmap()
 UPM = font['head'].unitsPerEm; CAP = font['OS/2'].sCapHeight
-def wordmark_path(text='OSTRO', track=0.35):
-    x = 0; ds = []; first_l = None; last_r = 0
+def wordmark_path(text='STRO', track=0.35):
+    # The first O of OSTRO is the mark itself: a disc the size of Archivo's O (with its overshoot).
+    o = gs[cmap[ord('O')]]; bp = BoundsPen(gs); o.draw(bp); ox0, oy0, ox1, oy1 = bp.bounds
+    D = oy1 - oy0                                   # disc diameter in font units
+    disc = ((ox1 - ox0 - D) / 2, CAP - oy1, D)      # x, y (top), diameter; O ink starts at x=0
+    x = o.width + track * UPM - ox0; ds = []; last_r = 0
     for i, ch in enumerate(text):
-        gname = cmap[ord(ch)]; gl = gs[gname]
+        gl = gs[cmap[ord(ch)]]
         bp = BoundsPen(gs); gl.draw(bp); bx0, by0, bx1, by1 = bp.bounds
-        if first_l is None: first_l = bx0
         sp = SVGPathPen(gs)
-        tp = TransformPen(sp, (1, 0, 0, -1, x - first_l, CAP))
-        gl.draw(tp); ds.append(sp.getCommands())
-        last_r = x - first_l + bx1
+        gl.draw(TransformPen(sp, (1, 0, 0, -1, x, CAP))); ds.append(sp.getCommands())
+        last_r = x + bx1
         x += gl.width + (track * UPM if i < len(text) - 1 else 0)
-    return ''.join(ds), last_r      # units: font units, cap top at 0, baseline at CAP
-WM_D, WM_W = wordmark_path()
-def wordmark(fill, tx, ty, cap_h):
-    s = cap_h / CAP
-    return f'<path fill="{fill}" transform="translate({tx:.2f},{ty:.2f}) scale({s:.5f})" d="{WM_D}"/>', WM_W * s
+    return ''.join(ds), last_r, disc
+WM_D, WM_W, WM_DISC = wordmark_path()
+def wordmark(fill, tx, ty, cap_h, accent=False):
+    s = cap_h / CAP; dx, dy, D = WM_DISC
+    g = mark(fill, tx + dx*s, ty + dy*s, D*s/100, accent)
+    return g + f'<path fill="{fill}" transform="translate({tx:.2f},{ty:.2f}) scale({s:.5f})" d="{WM_D}"/>', WM_W * s
 
 # ---------------------------------------------------------------- lockup builders (return svg, w, h)
 def guide_box(x0, y0, w, h, pad, col):
@@ -290,35 +293,9 @@ A(f'''<section class="panel">
  <div class="sizes" aria-label="Small size test">{sizes}</div>
 </section>''')
 
-# ---------- lockups
-def lock_tile(content, w, h, label, cls, cap, wide=False):
-    return f'<div class="tile {cls}{" wide" if wide else ""}">{svg(content, w, h, label, "lk")}<span class="cap">{cap}</span></div>'
-p1 = primary(NIGHT, guides=ASH); p2 = primary(BONE, guides=ASH)
-h1 = horizontal(NIGHT, guides=ASH); h2 = horizontal(BONE, guides=ASH)
-def icon_guides(bg, fg):
-    inner, w, h = app_icon(bg, fg)
-    pad = 30
-    return (f'<rect x="{pad}" y="{pad}" width="{w}" height="{h}" rx="44" fill="{bg}"/>'
-            f'<g transform="translate({pad},{pad})">{inner[inner.index("<g"):]}</g>'
-            f'<rect x="4" y="4" width="{w+2*pad-8}" height="{h+2*pad-8}" fill="none" stroke="{ASH}" stroke-dasharray="4 4"/>'), w + 2*pad, h + 2*pad
-i1 = icon_guides(NIGHT, BONE); i2 = icon_guides(NIGHT, BONE)
-def chest_tile(body, panel):
-    return hoodie(body, panel, BONE, 'c', notes=True)
-A(f'''<section class="panel">
- <p class="eyebrow">Lockups</p>
- <h2>The mark leads, the name follows</h2>
- <p class="lead">The wordmark is OSTRO in Archivo ExtraBold, always in capitals, tracked at 0.35em. In the primary lockup the mark sits centred above it. The dashed line is the clear space: the width of the counter at its widest, <b>x</b>, on every side. Nothing else goes inside it.</p>
- <div class="suite">
-  {lock_tile(p1[0], p1[1], p1[2], 'Primary lockup on Bone', 't-bone', 'Primary · on Bone')}
-  {lock_tile(p2[0], p2[1], p2[2], 'Primary lockup on Night', 't-night', 'Primary · on Night')}
-  {lock_tile(h1[0], h1[1], h1[2], 'Horizontal lockup on Bone', 't-bone', 'Horizontal · on Bone')}
-  {lock_tile(h2[0], h2[1], h2[2], 'Horizontal lockup on Night', 't-night', 'Horizontal · on Night')}
-  <div class="tile t-bone">{svg(i1[0], i1[1], i1[2], 'Profile picture and app icon', 'ico')}<span class="cap">Profile / app icon · on Bone</span></div>
-  <div class="tile t-night">{svg(i2[0].replace(f'stroke="{ASH}"', f'stroke="{ASH}"'), i2[1], i2[2], 'Profile picture and app icon on Night', 'ico')}<span class="cap">Profile / app icon · on Night</span></div>
-  <div class="tile t-bone tall">{svg(chest_tile(NIGHT, ASH).replace(f'fill="{NIGHT}" fill-opacity=".22"', f'fill="{ASH}" fill-opacity=".25"'), 400, 380, 'Chest monogram on Night hoodie', 'hd')}<span class="cap">Chest · 6 cm, on Bone</span></div>
-  <div class="tile t-night tall">{svg(chest_tile(DUNE, SAND), 400, 380, 'Chest monogram on Dune hoodie', 'hd')}<span class="cap">Chest · 6 cm, on Night</span></div>
- </div>
-</section>''')
+# ---------- lockups + signature details (kit.py, part 1)
+_KIT = open(os.path.join(HERE, 'kit.py')).read().split('# =================================================================== PRODUCT & PACKAGING')
+exec(_KIT[0])
 
 # ---------- palette
 PAL = [('Bone', BONE, 'Ground', 60, 'Backgrounds, labels, packaging'),
@@ -379,93 +356,8 @@ A(f'''<section class="panel dark">
  <ul class="never"><li>cheap</li><li>best quality</li><li>limited offer</li></ul>
 </section>''')
 
-# ---------- applications
-# hang tag
-tag = (f'<rect x="0" y="0" width="200" height="340" fill="{ASH}" fill-opacity="0"/>'
-       f'<path d="M14,44 L58,12 H142 L186,44 V330 H14 Z" fill="{BONE}"/>'
-       f'<circle cx="100" cy="40" r="8" fill="{NIGHT}"/>'
-       f'<path d="M100,40 C112,8 150,-2 196,6" stroke="{EMBER}" stroke-width="1.6" fill="none"/>'
-       f'<path d="M100,40 C94,20 76,6 56,2" stroke="{EMBER}" stroke-width="1.6" fill="none"/>'
-       + mark(NIGHT, 100 - MW*0.62/2, 70, 0.62, accent=True) +
-       f'<g font-family="IBM Plex Mono,monospace" font-weight="500" font-size="9.5" letter-spacing="1.1" fill="{NIGHT}" text-anchor="middle">'
-       f'<text x="100" y="170">HEAVYWEIGHT HOODIE</text>'
-       f'<text x="100" y="196" font-weight="400" font-size="7.6" letter-spacing=".7">COLOURWAY 01 — DUNE / SAND</text>'
-       f'<text x="100" y="222">SIZE · M</text></g>'
-       f'<line x1="30" y1="250" x2="170" y2="250" stroke="{ASH}" stroke-width="1.4" stroke-dasharray="6 4" stroke-linecap="round"/>'
-       f'<text x="100" y="282" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" letter-spacing="1.2" fill="{NIGHT}">MADE IN ALGERIA</text>'
-       + wordmark(NIGHT, 100 - WM_W*(8/CAP)/2, 302, 8)[0])
-# neck label
-lab = [f'<rect width="300" height="120" fill="{NIGHT}"/>']
-for y in range(3, 120, 3): lab.append(f'<line x1="0" y1="{y}" x2="300" y2="{y}" stroke="{BONE}" stroke-opacity=".05" stroke-width="1"/>')
-lab.append(f'<path d="M0,0 h300 M0,120 h300" stroke="{ASH}" stroke-width="3" stroke-opacity=".6"/>')
-lab.append(mark(BONE, 30, 33, 0.54))
-wmt, wmw = wordmark(BONE, 108, 51, 16)
-lab.append(wmt)
-lab.append(f'<line x1="{108+wmw+16:.1f}" y1="40" x2="{108+wmw+16:.1f}" y2="80" stroke="{BONE}" stroke-opacity=".4"/>')
-lab.append(f'<text x="{108+wmw+34:.1f}" y="68" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-weight="500" font-size="20" fill="{BONE}">M</text>')
-label_svg = ''.join(lab)
-# instagram profile
-ig = [f'<rect width="320" height="440" rx="18" fill="{BONE}"/>',
-      f'<rect x=".5" y=".5" width="319" height="439" rx="18" fill="none" stroke="{ASH}" stroke-opacity=".5"/>',
-      f'<text x="20" y="34" font-family="Archivo,sans-serif" font-weight="700" font-size="14" fill="{NIGHT}">ostro.dz</text>',
-      f'<circle cx="56" cy="92" r="36" fill="{NIGHT}"/>', mark(BONE, 56 - MW*0.42/2, 71, 0.42),
-      f'<g font-family="Archivo,sans-serif" fill="{NIGHT}" text-anchor="middle">'
-      f'<text x="150" y="90" font-weight="700" font-size="15">9</text><text x="150" y="106" font-size="10.5">posts</text>'
-      f'<text x="210" y="90" font-weight="700" font-size="15">—</text><text x="210" y="106" font-size="10.5">followers</text>'
-      f'<text x="270" y="90" font-weight="700" font-size="15">—</text><text x="270" y="106" font-size="10.5">following</text></g>',
-      f'<text x="20" y="152" font-family="Archivo,sans-serif" font-weight="800" font-size="13" letter-spacing="3.5" fill="{NIGHT}">OSTRO</text>',
-      f'<g font-family="Archivo,sans-serif" font-size="11.5" fill="{NIGHT}"><text x="20" y="172">Heavy boxy hoodies. Made to order.</text><text x="20" y="189">Sewn in Béchar · Delivery 58 wilayas</text><text x="20" y="206">Paiement à la livraison</text></g>',
-      f'<rect x="20" y="220" width="136" height="28" rx="7" fill="{NIGHT}"/><text x="88" y="238" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="11" fill="{BONE}">Follow</text>',
-      f'<rect x="164" y="220" width="136" height="28" rx="7" fill="none" stroke="{ASH}"/><text x="232" y="238" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="700" font-size="11" fill="{NIGHT}">Message</text>']
-for k, (lbl, inner) in enumerate([('Pièce 01', 'hood'), ('Tailles', 'S M L'), ('Avis', '“ ”')]):
-    cx = 48 + k*70
-    ig.append(f'<circle cx="{cx}" cy="292" r="26" fill="none" stroke="{ASH}" stroke-width="1"/><circle cx="{cx}" cy="292" r="22" fill="{NIGHT}"/>')
-    if inner == 'hood':
-        ig.append(f'<g transform="translate({cx-17},{292-16}) scale(.085)">{hoodie(DUNE, SAND, BONE, "h")}</g>')
-    else:
-        ig.append(f'<text x="{cx}" y="{296 if inner!="“ ”" else 302}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="{9 if inner!="“ ”" else 20}" letter-spacing="1" fill="{BONE}">{inner}</text>')
-    ig.append(f'<text x="{cx}" y="334" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10" fill="{NIGHT}">{lbl}</text>')
-ig.append(f'<line x1="0" y1="350" x2="320" y2="350" stroke="{ASH}" stroke-opacity=".5"/>')
-for k in range(3):
-    x = 1 + k*106.3
-    bg = [BONE, NIGHT, SAND][k]
-    ig.append(f'<rect x="{x:.1f}" y="352" width="105" height="86" fill="{bg}"/>')
-    if k == 0: ig.append(f'<g transform="translate({x+30:.1f},358) scale(.19)">{hoodie(DUNE, SAND, BONE, "p")}</g>' + mark(NIGHT, x + 6, 357, 0.1))
-    if k == 1: ig.append(mark(BONE, x + 52.5 - MW*0.4/2, 375, 0.4))
-    if k == 2: ig.append(f'<g transform="translate({x+30:.1f},358) scale(.19)">{hoodie(NIGHT, ASH, BONE, "q")}</g>')
-ig_svg = ''.join(ig)
-# shipping bag + sticker
-bag = [f'<path d="M20,30 H280 V350 H20 Z" fill="{NIGHT}"/>',
-       f'<path d="M20,30 H280 V58 H20 Z" fill="{NIGHT}"/><line x1="20" y1="58" x2="280" y2="58" stroke="{ASH}" stroke-opacity=".5" stroke-dasharray="3 3"/>']
-bw = WM_W * (22/CAP)
-bag.append(wordmark(BONE, 150 - bw/2, 180, 22)[0])
-bag.append(f'<circle cx="150" cy="232" r="4" fill="{EMBER}"/>')
-bag.append(f'<text x="150" y="326" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8.5" letter-spacing="1.5" fill="{BONE}" fill-opacity=".75">BÉCHAR → 58 WILAYAS</text>')
-bag.append(f'<circle cx="250" cy="330" r="44" fill="{BONE}"/><circle cx="250" cy="330" r="38" fill="none" stroke="{ASH}" stroke-width=".8" stroke-dasharray="2 2"/>')
-bag.append(mark(NIGHT, 250 - MW*0.42/2, 309, 0.42))
-bag_svg = ''.join(bag)
-# post template
-post = [f'<rect width="300" height="300" fill="{BONE}"/>',
-        f'<rect x="40" y="52" width="220" height="186" fill="none" stroke="{ASH}" stroke-dasharray="4 4"/>',
-        f'<g transform="translate(66,58) scale(.42)">{hoodie(DUNE, SAND, BONE, "t")}</g>',
-        f'<text x="48" y="232" font-family="IBM Plex Mono,monospace" font-size="7" letter-spacing="1" fill="{ASH}">PRODUCT PHOTO</text>',
-        mark(NIGHT, 18, 16, 0.24),
-        f'<text x="18" y="276" font-family="Archivo,sans-serif" font-size="15" fill="{NIGHT}">Sewn by hand in Béchar.</text>',
-        f'<text x="282" y="276" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="8" letter-spacing="1" fill="{ASH}">01 / 09</text>']
-post_svg = ''.join(post)
-
-A(f'''<section class="panel">
- <p class="eyebrow">Applications</p>
- <h2>On the hoodie, in the bag, on the feed</h2>
- <div class="apps">
-  <div class="app wide2"><div class="hoodies"><div>{svg(hoodie(DUNE, SAND, BONE, 'a1'), 400, 380, 'Hoodie, Dune with Sand panels', 'hd')}<span class="lbl">Colourway 01 · Dune / Sand</span></div><div>{svg(hoodie(NIGHT, ASH, BONE, 'a2').replace(f'fill="{NIGHT}" fill-opacity=".22"', f'fill="{ASH}" fill-opacity=".25"'), 400, 380, 'Hoodie, Night with Ash panels', 'hd')}<span class="lbl">Colourway 02 · Night / Ash</span></div></div><span class="lbl">Heavyweight hoodie · front</span></div>
-  <div class="app dk">{svg(tag, 200, 340, 'Hang tag', 'tagsvg')}<span class="lbl">Hang tag</span></div>
-  <div class="app">{svg(label_svg, 300, 120, 'Woven neck label', 'labsvg')}<span class="lbl">Woven neck label</span></div>
-  <div class="app ig">{svg(ig_svg, 320, 440, 'Instagram profile', 'igsvg')}<span class="lbl">Instagram profile</span></div>
-  <div class="app">{svg(bag_svg, 300, 380, 'Shipping bag and sticker', 'bagsvg')}<span class="lbl">Shipping bag + sticker</span></div>
-  <div class="app">{svg(post_svg, 300, 300, 'Instagram post template', 'postsvg')}<span class="lbl">Post template</span></div>
- </div>
-</section>''')
+# ---------- packaging + social (kit.py, part 2)
+exec(_KIT[1])
 
 # ---------- don'ts
 def dont(inner, cap, bg=BONE):
@@ -494,8 +386,8 @@ A(f'''<section class="panel">
 A(f'''<section class="panel">
  <p class="eyebrow">Files</p>
  <h2>Vector files in the repo</h2>
- <p class="lead">Every logo is outlined SVG, so it prints and embroiders without the fonts installed. They are in <code>brand/ostro/svg/</code>.</p>
- <ul class="files"><li><code>ostro-mark-night.svg</code>, <code>-bone.svg</code>, <code>-accent.svg</code></li><li><code>ostro-primary-night.svg</code>, <code>-bone.svg</code></li><li><code>ostro-horizontal-night.svg</code>, <code>-bone.svg</code></li><li><code>ostro-wordmark-night.svg</code>, <code>-bone.svg</code></li><li><code>ostro-app-icon.svg</code></li><li><code>ostro-chest-60mm-bone.svg</code> (6 cm embroidery)</li></ul>
+ <p class="lead">Logos are outlined SVG, so they print and embroider without the fonts installed. Print pieces and social templates keep their text as live Archivo and IBM Plex Mono, so install both from Google Fonts before editing them.</p>
+ <ul class="files"><li><code>svg/ostro-mark-night.svg</code>, <code>-bone.svg</code>, <code>-accent.svg</code></li><li><code>svg/ostro-primary-night.svg</code>, <code>-bone.svg</code></li><li><code>svg/ostro-wordmark-night.svg</code>, <code>-bone.svg</code></li><li><code>svg/ostro-app-icon.svg</code>, <code>svg/ostro-chest-60mm-bone.svg</code></li><li><code>social/</code>: 4 posts, 3 stories, 5 highlight covers, avatar, Facebook cover, YouTube banner and thumbnail</li><li><code>print/</code>: hang tag front and back, neck and care labels, bag, shipping label, thank-you card, business card, stickers</li></ul>
 </section>''')
 
 # ================================================================ css + page
@@ -609,10 +501,34 @@ code{{font-family:var(--mono);font-size:.88em}}
 .donts{{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin-top:26px}}
 .dont{{margin:0;display:grid;gap:10px}} .dont svg{{width:100%;border-radius:10px;border:1px solid color-mix(in srgb,var(--ash) 45%,transparent)}}
 .dont figcaption{{font-size:10.5px;line-height:1.5}}
-.app.ig{{grid-row:span 2}}
+.app.dk{{grid-row:span 2}}
+.tile.wmt{{grid-column:span 1}} .tile.wmt .lk{{width:min(100%,360px)}}
+.devices{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}}
+.dev{{display:grid;gap:10px;align-content:start}} .dev .art svg{{width:100%;border-radius:10px;border:1px solid color-mix(in srgb,var(--ash) 45%,transparent)}}
+.dev h3{{margin:4px 0 0;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:16px}} .dev p{{margin:0;font-size:14.5px}}
+.pairsvg{{display:flex;gap:12px;justify-content:center;width:100%}} .pairsvg .tagsvg{{width:min(46%,170px)}}
+.stack{{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;width:100%}} .caresvg{{width:90px}} .stack .labsvg{{width:min(100%,240px)}}
+.codsvg{{width:min(100%,320px)}} .cardsvg{{width:min(100%,300px)}} .cards{{display:grid;gap:12px;width:min(100%,320px)}} .cards svg{{width:100%}}
+.sub2{{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:36px 0 0;padding-top:14px;border-top:1px solid var(--ash)}}
+.note{{font-size:14px;margin:10px 0 0;max-width:62ch}}
+.bio{{font-family:var(--body);font-size:15px;line-height:1.5;background:color-mix(in srgb,var(--sand) 35%,var(--bone));padding:12px 14px;border-radius:8px;margin:6px 0 0;white-space:pre-wrap}}
+.igrow{{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;margin-top:16px;align-items:start}}
+.igp svg{{width:100%}} .igside{{min-width:0}}
+.hls{{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px}} .hl{{margin:0;display:grid;gap:6px;justify-items:center}}
+.hlc{{width:72px;height:72px;border-radius:50%;overflow:hidden;outline:1.5px solid var(--ash);outline-offset:3px}} .hlc svg{{width:100%}}
+.hl figcaption{{font-size:12px}}
+.posts{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:16px}}
+.stories{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px;max-width:820px}}
+.soc{{margin:0;display:grid;gap:8px;align-content:start}} .soc svg{{width:100%;border-radius:8px;border:1px solid color-mix(in srgb,var(--ash) 45%,transparent)}}
+.soc figcaption,.hl figcaption{{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}}
+.soc small{{display:block;color:var(--ash);font-size:10px}}
+.wide-soc{{margin-top:16px}} .wide-soc svg{{width:100%;border-radius:8px;border:1px solid color-mix(in srgb,var(--ash) 45%,transparent)}}
+.ytrow{{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px;margin-top:14px;align-items:start}} .av2 svg{{border:none;max-width:220px}}
+@media (max-width:820px){{.devices{{grid-template-columns:minmax(0,1fr)}}.posts{{grid-template-columns:repeat(2,minmax(0,1fr))}}.igrow{{grid-template-columns:minmax(0,1fr)}}.igp{{max-width:340px}}}}
+@media (max-width:520px){{.stories{{grid-template-columns:repeat(2,minmax(0,1fr))}}.ytrow{{grid-template-columns:minmax(0,1fr)}}}}
 @media (max-width:900px){{.apps{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
 @media (max-width:720px){{.sketches{{grid-template-columns:repeat(2,minmax(0,1fr))}}.suite,.suite.three{{grid-template-columns:minmax(0,1fr)}}.sws{{grid-template-columns:repeat(2,minmax(0,1fr))}}}}
-@media (max-width:600px){{.apps{{grid-template-columns:minmax(0,1fr)}}.app.ig{{grid-row:auto}}}}
+@media (max-width:600px){{.apps{{grid-template-columns:minmax(0,1fr)}}.app.dk{{grid-row:auto}}}}
 .files{{columns:2 260px;font-size:14px;margin:16px 0 0;padding-left:18px}}
 '''
 
@@ -627,12 +543,15 @@ def wsvg(name, inner, w, h): open(os.path.join(OUT_SVG, name), 'w').write(standa
 for nm, col in (('night', NIGHT), ('bone', BONE)):
     wsvg(f'ostro-mark-{nm}.svg', mark(col), MW, 100)
     c, w, h = primary(col); wsvg(f'ostro-primary-{nm}.svg', c, w, h)
-    c, w, h = horizontal(col); wsvg(f'ostro-horizontal-{nm}.svg', c, w, h)
-    c, w = wordmark(col, 0, 0, 100); wsvg(f'ostro-wordmark-{nm}.svg', c, w, 100)
+    c, w = wordmark(col, 0, 2, 100); wsvg(f'ostro-wordmark-{nm}.svg', c, w, 106)
 wsvg('ostro-mark-accent.svg', mark(NIGHT, 2, 2, 1, True), MW + 4, 104)
 c, w, h = app_icon(); wsvg('ostro-app-icon.svg', c, w, h)
 # chest: 60 mm wide, in mm units
 s = 60 / MW
 open(os.path.join(OUT_SVG, 'ostro-chest-60mm-bone.svg'), 'w').write(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 {100*s:.2f}" width="60mm" height="{100*s:.2f}mm">{mark(BONE, 0, 0, s)}</svg>\n')
+ROOT = os.path.dirname(OUT_SVG.rstrip('/'))
+for rel, (inner, w, h) in EXPORTS.items():
+    p = os.path.join(ROOT, rel); os.makedirs(os.path.dirname(p), exist_ok=True)
+    open(p, 'w').write(standalone(inner, w, h))
 print('ok', len(page), 'X', round(X, 1), 'MW', round(MW, 1))
